@@ -463,7 +463,10 @@ class _StockUpPickingState extends State<StockUpPicking> {
       });
       ToastUtil.showInfo('无数据');
     }
-  // _onEvent("PGS1126050411;;;1;;1600254631;0;2407100001");
+
+   /* _onEvent("2501150089");
+    _onEvent("2501150090");
+    _onEvent("2501150092");*/
 
   }
 
@@ -567,6 +570,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
       //判断首次
       var firstPack = true;
       for(var item in this.hobby){
+        print(item[0]['value']['kingDeeCode'].length);
         if(item[0]['value']['kingDeeCode'].length>0){
           firstPack = false;
           break;
@@ -581,41 +585,74 @@ class _StockUpPickingState extends State<StockUpPicking> {
             if (element[0]['value']['barcode'].indexOf(code) == -1) {
               //if(materialDate['remainQty'] != materialDate['packNum']){
                 if((!isPack && !firstPack && (materialDate['remainQty'] != materialDate['packNum'] || (element[3]['value']['rateValue'] - double.parse(element[9]['value']['label'])) < double.parse(barcodeNum)))){
-                  showDialog(context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text("温馨提示"),
-                          content: const Text("箱号确认"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                isPack = true;
-                                Navigator.of(context).pop();
-                                this.getMaterialList(barcodeData, code, str);
-                              },
-                              child: const Text("否"),
-                            ),
-                            TextButton(
-                              onPressed: () async{
-                                isPack = true;
-                                bulkPackNo = packNo;
-                                bulkPackNo++;
-                                packNo = bulkPackNo;
-                                Navigator.of(context).pop();
-                                this.getMaterialList(barcodeData, code, str);
-
-                              },
-                              child: const Text("新箱"),
-                            ),
-                          ],
-                        );
+                  var codeNumber = 0;
+                  var fPrevPackNo = 0;
+                  var tPrevPackNo = 0;
+                  for (var withinElement in hobby) {
+                    for(var code in withinElement[0]['value']['kingDeeCode']){
+                      var codeItem = code.split("-");
+                      if(codeItem[4] == "否"){
+                        codeNumber++;
+                        if(int.parse(codeItem[3]) > fPrevPackNo){
+                          fPrevPackNo = int.parse(codeItem[3]);
+                        }
+                      }else{
+                        if(int.parse(codeItem[3]) > tPrevPackNo){
+                          tPrevPackNo = int.parse(codeItem[3]);
+                        }
                       }
-                  );
-                  break;
+                    }
+                  }
+                  if(codeNumber == 0){
+                    isPack = true;
+                    bulkPackNo = packNo;
+                    packNo++;
+                  }else{
+                    showDialog(context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("温馨提示"),
+                            content: const Text("箱号确认"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  isPack = true;
+                                  Navigator.of(context).pop();
+                                  this.getMaterialList(barcodeData, code, str);
+                                },
+                                child: const Text("否"),
+                              ),
+                              TextButton(
+                                onPressed: () async{
+                                  if(tPrevPackNo > fPrevPackNo){
+                                    bulkPackNo = tPrevPackNo;
+                                    bulkPackNo++;
+                                    packNo = bulkPackNo;
+                                  }else{
+                                    bulkPackNo = fPrevPackNo;
+                                    bulkPackNo++;
+                                    packNo = bulkPackNo;
+                                  }
+                                  isPack = true;
+                                  Navigator.of(context).pop();
+                                  this.getMaterialList(barcodeData, code, str);
+
+                                },
+                                child: const Text("新箱"),
+                              ),
+                            ],
+                          );
+                        }
+                    );
+                    break;
+                  }
                 }else{
                   if(materialDate['remainQty'] != materialDate['packNum'] || (element[3]['value']['rateValue'] - double.parse(element[9]['value']['label'])) < double.parse(barcodeNum)){
                     isPack = true;
                   }else{
+                    if(!firstPack && packNo == 1){
+                      packNo++;
+                    }
                     isPack = false;
                   }
                 }
@@ -631,9 +668,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
                       element[3]['value']['rateValue']) {
                     //判断条码是否重复
                     if (element[0]['value']['scanCode'].indexOf(code) == -1) {
-                      if(!isPack){
-                        packNo++;
-                      }
+                      print(isPack);
                       var item = code +
                           "-" +
                           (element[3]['value']['rateValue'] -
@@ -648,7 +683,9 @@ class _StockUpPickingState extends State<StockUpPicking> {
                           (isPack?"否":"是") +
                           "-" +
                           backBillNo;
-
+                      if(!isPack){
+                        packNo++;
+                      }
                       element[10]['value']['label'] = (element[3]['value']
                       ['label'] -
                           double.parse(element[9]['value']['label']))
@@ -751,9 +788,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
                               .toString();
                       element[9]['value']['value'] =
                       element[9]['value']['label'];
-                      if(!isPack){
-                        packNo++;
-                      }
+
                       var item = code +
                           "-" +
                           barcodeNum +
@@ -765,7 +800,9 @@ class _StockUpPickingState extends State<StockUpPicking> {
                           (isPack?"否":"是") +
                           "-" +
                           backBillNo;
-
+                      if(!isPack){
+                        packNo++;
+                      }
                       element[10]['value']['label'] = barcodeNum.toString();
                       element[10]['value']['value'] = barcodeNum.toString();
                       element[10]['value']['remainder'] = "0";
@@ -791,44 +828,76 @@ class _StockUpPickingState extends State<StockUpPicking> {
             if (element[0]['value']['barcode'].indexOf(code) == -1 ) {
               //if(materialDate['remainQty'] != materialDate['packNum']){
               if((!isPack && !firstPack && (materialDate['remainQty'] != materialDate['packNum'] || (element[3]['value']['rateValue'] - double.parse(element[9]['value']['label'])) < double.parse(barcodeNum)))){
-                showDialog(context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("温馨提示"),
-                        content: const Text("箱号确认"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              isPack = true;
-                              Navigator.of(context).pop();
-                              this.getMaterialList(barcodeData, code, str);
-
-                            },
-                            child: const Text("否"),
-                          ),
-                          TextButton(
-                            onPressed: () async{
-                              isPack = true;
-                              bulkPackNo = packNo;
-                              bulkPackNo++;
-                              packNo = bulkPackNo;
-                              Navigator.of(context).pop();
-                              this.getMaterialList(barcodeData, code, str);
-
-                            },
-                            child: const Text("新箱"),
-                          ),
-                        ],
-                      );
+                var codeNumber = 0;
+                var fPrevPackNo = 0;
+                var tPrevPackNo = 0;
+                for (var withinElement in hobby) {
+                  for(var code in withinElement[0]['value']['kingDeeCode']){
+                    var codeItem = code.split("-");
+                    if(codeItem[4] == "否"){
+                      codeNumber++;
+                      if(int.parse(codeItem[3]) > fPrevPackNo){
+                        fPrevPackNo = int.parse(codeItem[3]);
+                      }
+                    }else{
+                      if(int.parse(codeItem[3]) > tPrevPackNo){
+                        tPrevPackNo = int.parse(codeItem[3]);
+                      }
                     }
-                );
-                break;
+                  }
+                }
+                if(codeNumber == 0){
+                  isPack = true;
+                  bulkPackNo = packNo;
+                  packNo++;
+                }else{
+                  showDialog(context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("温馨提示"),
+                          content: const Text("箱号确认"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                isPack = true;
+                                Navigator.of(context).pop();
+                                this.getMaterialList(barcodeData, code, str);
+                              },
+                              child: const Text("否"),
+                            ),
+                            TextButton(
+                              onPressed: () async{
+                                if(tPrevPackNo > fPrevPackNo){
+                                  bulkPackNo = tPrevPackNo;
+                                  bulkPackNo++;
+                                  packNo = bulkPackNo;
+                                }else{
+                                  bulkPackNo = fPrevPackNo;
+                                  bulkPackNo++;
+                                  packNo = bulkPackNo;
+                                }
+                                isPack = true;
+                                Navigator.of(context).pop();
+                                this.getMaterialList(barcodeData, code, str);
+
+                              },
+                              child: const Text("新箱"),
+                            ),
+                          ],
+                        );
+                      }
+                  );
+                  break;
+                }
               }else{
                 if(materialDate['remainQty'] != materialDate['packNum'] || (element[3]['value']['rateValue'] - double.parse(element[9]['value']['label'])
                 ) <
                     double.parse(barcodeNum)){
                   isPack = true;
                 }else{
+                  if(!firstPack && packNo == 1){
+                    packNo++;
+                  }
                   isPack = false;
                 }
               }
@@ -845,9 +914,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
                         element[3]['value']['rateValue']) {
                       //判断条码是否重复
                       if (element[0]['value']['scanCode'].indexOf(code) == -1) {
-                        if(!isPack){
-                          packNo++;
-                        }
+
                         var item = code +
                             "-" +
                             (element[3]['value']['rateValue'] -
@@ -862,7 +929,9 @@ class _StockUpPickingState extends State<StockUpPicking> {
                             (isPack?"否":"是") +
                             "-" +
                             backBillNo;
-
+                        if(!isPack){
+                          packNo++;
+                        }
                         element[10]['value']['label'] = (element[3]['value']
                         ['label'] -
                             double.parse(element[9]['value']['label']))
@@ -1012,9 +1081,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
                                 .toString();
                         element[9]['value']['value'] =
                         element[9]['value']['label'];
-                        if(!isPack){
-                          packNo++;
-                        }
+
                         var item = code +
                             "-" +
                             barcodeNum +
@@ -1026,7 +1093,9 @@ class _StockUpPickingState extends State<StockUpPicking> {
                             (isPack?"否":"是") +
                             "-" +
                             backBillNo;
-
+                        if(!isPack){
+                          packNo++;
+                        }
                         element[10]['value']['label'] = barcodeNum.toString();
                         element[10]['value']['value'] = barcodeNum.toString();
                         element[10]['value']['remainder'] = "0";
@@ -1056,9 +1125,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
                         //判断条码是否重复
                         if (element[0]['value']['scanCode'].indexOf(code) ==
                             -1) {
-                          if(!isPack){
-                            packNo++;
-                          }
+
                           var item = code +
                               "-" +
                               (element[3]['value']['rateValue'] -
@@ -1074,6 +1141,9 @@ class _StockUpPickingState extends State<StockUpPicking> {
                               (isPack?"否":"是") +
                               "-" +
                               backBillNo;
+                          if(!isPack){
+                            packNo++;
+                          }
                           element[10]['value']['label'] = (element[3]['value']
                           ['label'] -
                               double.parse(element[9]['value']['label']))

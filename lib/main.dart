@@ -185,6 +185,7 @@ class _MyHomePageState extends State {
       map['password'] =  password;
       map['type'] =  2;
       String entity = await LoginEntity.login(map);
+      print(entity);
       print(jsonDecode(entity));
       var entityRes = jsonDecode(entity);
       if (entityRes['success']) {

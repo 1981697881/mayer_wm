@@ -302,6 +302,7 @@ class _PurchaseWarehousingListingState
         this._labelContent.text = '';
       }else{
         if(materialCode.indexOf(_code) == -1){
+          materialCode.add(_code);
           await this.getMaterialList("", _code, "");
         }else{
           ToastUtil.showInfo("该条码已扫描");
@@ -437,7 +438,7 @@ class _PurchaseWarehousingListingState
           "isHide": false,
           "value": {"label": "", "value": ""}
         });
-        materialCode.add(this._labelContent.text);
+
         hobby.add(arr);
       }
       setState(() {

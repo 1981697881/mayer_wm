@@ -131,7 +131,7 @@ class _ListingPageState
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    //_onEvent("2408100015");
+    //_onEvent("BN154");
     //_onEvent("PGS1126050411;;;80;;1547418307;0;1");
     EasyLoading.dismiss();
   }
@@ -308,7 +308,7 @@ class _ListingPageState
           }else{
             this._positionContent.text = _code;
           }
-          //_onEvent("PFS6181070000;;;250;;1758244124;0;2407100002");
+          //_onEvent("PGS1126050411;;;80;;1547418307;0;1");
         } else {
           ToastUtil.showInfo(jsonDecode(order)['msg']);
         }
@@ -318,6 +318,7 @@ class _ListingPageState
           this._labelContent.text = '';
         }else{
           if(materialCode.indexOf(_code) == -1){
+            materialCode.add(_code);
             await this.getMaterialList("", _code, "");
           }else{
             ToastUtil.showInfo("该条码已装扫描");
@@ -330,7 +331,6 @@ class _ListingPageState
   }
 
   getMaterialList(barcodeData, code, str) async {
-
     Map<String, dynamic> userMap = Map();
     userMap['uuid'] = code;
     String order = await CurrencyEntity.barcodeScan(userMap);
@@ -499,7 +499,7 @@ class _ListingPageState
                   "value": materialDate['remainQty']
                 }
               });
-              materialCode.add(code);
+
             }else{
               Map<String, dynamic> inventoryMap = Map();
               inventoryMap['number'] = materialDate['number'];
@@ -510,7 +510,56 @@ class _ListingPageState
               String inventoryOrder = await CurrencyEntity.getInventory(inventoryMap);
               if (jsonDecode(inventoryOrder)['success']) {
                 if (jsonDecode(inventoryOrder)['data']['list'].length > 1) {
-                  showDialog(context: context,
+                  arr.add({
+                    "title": "库位号",
+                    "name": "FMaterial",
+                    "isHide": false,
+                    "value": {
+                      "label": this._positionContent.text,
+                      "value": this._positionContent.text,
+                      "barcode": [code],
+                      "kingDeeCode": [code + "-" + barcodeNum + "-" + fsn],
+                      "scanCode": [code]
+                    }
+                  });
+                  arr.add({
+                    "title": "条码",
+                    "name": "FRealQty",
+                    "isHide": false,
+                    "value": {
+                      "label": this._labelContent.text,
+                      "value": this._labelContent.text
+                    }
+                  });
+                  arr.add({
+                    "title": "上架数量",
+                    "name": "FRealQty",
+                    "isHide": false,
+                    "value": {
+                      "label": barcodeNum,
+                      "value": barcodeNum
+                    }
+                  });
+                  arr.add({
+                    "title": "加入数量",
+                    "name": "FRealQty",
+                    "isHide": false,
+                    "value": {
+                      "label": barcodeNum,
+                      "value": barcodeNum
+                    }
+                  });
+                  arr.add({
+                    "title": "剩余数量",
+                    "name": "FRealQty",
+                    "isHide": false,
+                    "value": {
+                      "label": materialDate['remainQty'],
+                      "value": materialDate['remainQty']
+                    }
+                  });
+
+                  /*showDialog(context: context,
                       builder: (context) {
                         return AlertDialog(
                           title: const Text("温馨提示"),
@@ -579,7 +628,7 @@ class _ListingPageState
                           ],
                         );
                       }
-                  );
+                  );*/
                 }else{
                   arr.add({
                     "title": "库位号",
@@ -629,7 +678,6 @@ class _ListingPageState
                       "value": materialDate['remainQty']
                     }
                   });
-                  materialCode.add(this._labelContent.text);
                 }
               }else{
                 ToastUtil.errorDialog(context,
@@ -827,11 +875,9 @@ class _ListingPageState
                               icon: new Icon(Icons.mode_edit),
                               tooltip: '点击扫描',
                               onPressed: () {
-                                this._textNumber.text = this
-                                    .hobby[i][j]["value"]["label"]
+                                this._textNumber.text = double.parse(this.hobby[i][j]["value"]["label"]).truncate()
                                     .toString();
-                                this._FNumber = this
-                                    .hobby[i][j]["value"]["label"]
+                                this._FNumber = double.parse(this.hobby[i][j]["value"]["label"]).truncate()
                                     .toString();
                                 checkItem = 'FNumber';
                                 this.show = false;
@@ -842,8 +888,7 @@ class _ListingPageState
                                 if (this.hobby[i][j]["value"]["label"] != 0) {
                                   this._textNumber.value =
                                       _textNumber.value.copyWith(
-                                        text: this
-                                            .hobby[i][j]["value"]["label"]
+                                        text: double.parse(this.hobby[i][j]["value"]["label"]).truncate()
                                             .toString(),
                                       );
                                 }
@@ -1073,8 +1118,16 @@ class _ListingPageState
           this.hobby = [];
           this.orderDate = [];
           this.FBillNo = '';
+          this._positionContent.text = '';
+          this._labelContent.text = '';
+          this.productNumber = '';
+          this.productName = '';
+          this.productSpecs = '';
+          this.recommendedPathList = [];
+          this.materialCode = [];
+          this.isSubmit = false;
           ToastUtil.showInfo('提交成功');
-          Navigator.of(context).pop("refresh");
+          //Navigator.of(context).pop("refresh");
         });
       } else {
         setState(() {
@@ -1256,6 +1309,7 @@ class _ListingPageState
                                 ToastUtil.showInfo('请扫描库位或输入');
                               }
                             },
+
                           ),
                         ),
                       ),
