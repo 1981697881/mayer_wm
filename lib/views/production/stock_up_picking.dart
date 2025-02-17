@@ -340,78 +340,182 @@ class _StockUpPickingState extends State<StockUpPicking> {
       for(var value in orderDate){
         fNumber.add(value['FItemNumber']);
         List arr = [];
-        arr.add({
-          "title": "物料名称",
-          "name": "FMaterial",
-          "isHide": false,
-          "value": {
-            "label": value['FItemName'] + "- (" + value['FItemNumber'] + ")",
-            "value": value['FItemNumber'],
-            "barcode": [],
-            "kingDeeCode": [],
-            "scanCode": []
+        Map<String, dynamic> pickMap = Map();
+        pickMap['tranType'] = 721;
+        pickMap['itemNumber'] = value['FItemNumber'];
+        pickMap['billNo'] = this.fBillNo;
+        String pickRes = await CurrencyEntity.pollingPick(pickMap);
+        var stocks = jsonDecode(pickRes);
+        if (jsonDecode(pickRes)['success']) {
+          print(jsonDecode(pickRes)['data']);
+          if(jsonDecode(pickRes)['data']['list'].length>0){
+            var pickDataList = jsonDecode(pickRes)['data']['list'];
+            var barcodeList = [];
+            var kingDeeCodeList = [];
+            var pickNum = 0;
+            for(var pickItem in pickDataList){
+              barcodeList.add(pickItem['FBarcode']);
+              pickNum = pickNum + int.parse(pickItem['FQty']);
+              var warePosi = (pickItem['defaultStockNumber']==null?"":pickItem['defaultStockNumber'])+"/"+(pickItem['location']==null?"":pickItem['location']);
+              var item = pickItem['FBarcode'].toString() +
+                  "-" +
+                  pickItem['FQty'].toString() +
+                  "-" +
+                  warePosi +
+                  "-" +
+                  pickItem['FPackNum'].toString() +
+                  "-" +
+                  (pickItem['FMix']=="N"?"否":"是") +
+                  "-" +
+                  pickItem['FBillNo'];
+              kingDeeCodeList.add(item);
+            }
+            arr.add({
+              "title": "物料名称",
+              "name": "FMaterial",
+              "isHide": false,
+              "value": {
+                "label": value['FItemName'] + "- (" + value['FItemNumber'] + ")",
+                "value": value['FItemNumber'],
+                "barcode": barcodeList,
+                "kingDeeCode": kingDeeCodeList,
+                "scanCode": barcodeList
+              }
+            });
+            arr.add({
+              "title": "规格型号",
+              "isHide": false,
+              "name": "FMaterialIdFSpecification",
+              "value": {"label": value['FModel'], "value": value['FModel']}
+            });
+            arr.add({
+              "title": "重量",
+              "name": "FUnitId",
+              "isHide": false,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "数量",
+              "name": "",
+              "isHide": false,
+              "value": {
+                "label": value["Fauxqty"],
+                "value": value["Fauxqty"],
+                "rateValue": value["Fauxqty"]
+              } /*+value[12]*0.1*/
+            });
+            arr.add({
+              "title": "仓库",
+              "name": "FStockID",
+              "isHide": true,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "批号",
+              "name": "FLot",
+              "isHide": true,
+              "value": {"label": '', "value": ''}
+            });
+            arr.add({
+              "title": "库位",
+              "name": "FStockLocID",
+              "isHide": true,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "操作",
+              "name": "",
+              "isHide": true,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "备注",
+              "name": "",
+              "isHide": false,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "拣货数量",
+              "name": "FRealQty",
+              "isHide": false,
+              /*value[12]*/
+              "value": {"label": pickNum.toString(), "value": pickNum.toString()}
+            });
+          }else{
+            arr.add({
+              "title": "物料名称",
+              "name": "FMaterial",
+              "isHide": false,
+              "value": {
+                "label": value['FItemName'] + "- (" + value['FItemNumber'] + ")",
+                "value": value['FItemNumber'],
+                "barcode": [],
+                "kingDeeCode": [],
+                "scanCode": []
+              }
+            });
+            arr.add({
+              "title": "规格型号",
+              "isHide": false,
+              "name": "FMaterialIdFSpecification",
+              "value": {"label": value['FModel'], "value": value['FModel']}
+            });
+            arr.add({
+              "title": "重量",
+              "name": "FUnitId",
+              "isHide": false,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "数量",
+              "name": "",
+              "isHide": false,
+              "value": {
+                "label": value["Fauxqty"],
+                "value": value["Fauxqty"],
+                "rateValue": value["Fauxqty"]
+              } /*+value[12]*0.1*/
+            });
+            arr.add({
+              "title": "仓库",
+              "name": "FStockID",
+              "isHide": true,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "批号",
+              "name": "FLot",
+              "isHide": true,
+              "value": {"label": '', "value": ''}
+            });
+            arr.add({
+              "title": "库位",
+              "name": "FStockLocID",
+              "isHide": true,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "操作",
+              "name": "",
+              "isHide": true,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "备注",
+              "name": "",
+              "isHide": false,
+              "value": {"label": "", "value": ""}
+            });
+            arr.add({
+              "title": "拣货数量",
+              "name": "FRealQty",
+              "isHide": false,
+              /*value[12]*/
+              "value": {"label": "0", "value": "0"}
+            });
           }
-        });
-        arr.add({
-          "title": "规格型号",
-          "isHide": false,
-          "name": "FMaterialIdFSpecification",
-          "value": {"label": value['FModel'], "value": value['FModel']}
-        });
-        arr.add({
-          "title": "重量",
-          "name": "FUnitId",
-          "isHide": false,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "数量",
-          "name": "",
-          "isHide": false,
-          "value": {
-            "label": value["Fauxqty"],
-            "value": value["Fauxqty"],
-            "rateValue": value["Fauxqty"]
-          } /*+value[12]*0.1*/
-        });
-        
-        arr.add({
-          "title": "仓库",
-          "name": "FStockID",
-          "isHide": true,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "批号",
-          "name": "FLot",
-          "isHide": true,
-          "value": {"label": '', "value": ''}
-        });
-        arr.add({
-          "title": "库位",
-          "name": "FStockLocID",
-          "isHide": true,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "操作",
-          "name": "",
-          "isHide": true,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "备注",
-          "name": "",
-          "isHide": false,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "拣货数量",
-          "name": "FRealQty",
-          "isHide": false,
-          /*value[12]*/
-          "value": {"label": "0", "value": "0"}
-        });
+        }
+
         arr.add({
           "title": "最后扫描数量",
           "name": "FLastQty",
@@ -464,8 +568,9 @@ class _StockUpPickingState extends State<StockUpPicking> {
       ToastUtil.showInfo('无数据');
     }
 
-   /* _onEvent("2501150089");
-    _onEvent("2501150090");
+  /* _onEvent("PAS6435100211");
+   _onEvent("PAS6435100211");*/
+    /* _onEvent("2501150090");
     _onEvent("2501150092");*/
 
   }
@@ -503,7 +608,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
         if(materialCode.indexOf(_code) == -1){
           await this.getMaterialList("", _code, this._positionContent.text);
         }else{
-          ToastUtil.showInfo("该条码已装扫描");
+          ToastUtil.showInfo("该条码已被扫描");
         }
       }
     }*/
@@ -544,6 +649,18 @@ class _StockUpPickingState extends State<StockUpPicking> {
         ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
         return;
       }
+      var codeRemainQty = materialDate['remainQty'];
+      //循环查询重复条码项
+      for (var withinElement in hobby) {
+        for(var withinCode in withinElement[0]['value']['kingDeeCode']){
+          var codeItem = withinCode.split("-");
+          if(codeItem[0] == code && (codeRemainQty - double.parse(codeItem[1])) > 0){
+            codeRemainQty = (codeRemainQty - double.parse(codeItem[1]));
+          }
+        }
+      }
+      //获取计算后的数量
+      materialDate['remainQty'] = codeRemainQty;
       var barcodeNum = materialDate['remainQty'].toInt().toString();
       var barcodeQuantity = materialDate['remainQty'].toInt().toString();
       var backBillNo = materialDate['billNo'];
@@ -818,8 +935,8 @@ class _StockUpPickingState extends State<StockUpPicking> {
                   }
                 }
             } else {
-              ToastUtil.showInfo('该标签已扫描');
-              break;
+              //ToastUtil.showInfo('该标签已扫描或剩余数量为零');
+              continue;
             }
           }
         } else {
@@ -1337,8 +1454,8 @@ class _StockUpPickingState extends State<StockUpPicking> {
                 }
               }
             } else {
-              ToastUtil.showInfo('该标签已扫描');
-              break;
+              //ToastUtil.showInfo('该标签已扫描或剩余数量为零');
+              continue;
             }
           }
         }
@@ -2098,19 +2215,22 @@ class _StockUpPickingState extends State<StockUpPicking> {
             FEntityItem['fitemId'] = element[0]['value']['value'];
             FEntityItem['fbatchNo'] = element[5]['value']['value'];
             FEntityItem['fdCStockId'] = itemCode[2].split("/")[0];
-            salesSubObj['uuid'] = itemCode[0];
-            salesSubObj['quantity'] = itemCode[1];
-            fSerialSub.add(salesSubObj);
-            FEntityItem['barcodeList'] = fSerialSub;
+            if(itemCode[5] != fBillNo){
+              salesSubObj['uuid'] = itemCode[0];
+              salesSubObj['quantity'] = itemCode[1];
+              fSerialSub.add(salesSubObj);
+              FEntityItem['barcodeList'] = fSerialSub;
+            }
             FSalesEntity.add(FEntityItem);
-
-            subObj['type'] = 2;
-            subObj['billNo'] = this.orderTranType + "-"+ fBillNo;
-            subObj['date'] = FDate;
-            subObj['srcPositions'] = itemCode[2].split("/")[1];
-            subObj['srcStockNumber'] = itemCode[2].split("/")[0];
-            subObj['uuid'] = itemCode[0];
-            FEntity.add(subObj);
+            if(itemCode[5] != fBillNo){
+              subObj['type'] = 2;
+              subObj['billNo'] = this.orderTranType + "-"+ fBillNo;
+              subObj['date'] = FDate;
+              subObj['srcPositions'] = itemCode[2].split("/")[1];
+              subObj['srcStockNumber'] = itemCode[2].split("/")[0];
+              subObj['uuid'] = itemCode[0];
+              FEntity.add(subObj);
+            }
             if(itemCode.length>3){
               Map<String, dynamic> PackingEntityItem = Map();
               PackingEntityItem['packNo'] = itemCode[3];
@@ -2140,13 +2260,17 @@ class _StockUpPickingState extends State<StockUpPicking> {
         }
       };
       if (FEntity.length == 0) {
-        this.isSubmit = false;
-        ToastUtil.showInfo('请输入数量');
+        setState(() {
+          this.isSubmit = false;
+          ToastUtil.showInfo('无录入数量或数量无更改');
+        });
         return;
       }
       if (PreEntity.length == 0 || PackingEntity.length == 0) {
-        this.isSubmit = false;
-        ToastUtil.showInfo('请录入箱号');
+        setState(() {
+          this.isSubmit = false;
+          ToastUtil.showInfo('请录入箱号');
+        });
         return;
       }
       Model['items'] = FSalesEntity;

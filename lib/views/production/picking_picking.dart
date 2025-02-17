@@ -401,7 +401,7 @@ class _PickingPickingState extends State<PickingPicking> {
         if(materialCode.indexOf(_code) == -1){
           await this.getMaterialList("", _code, this._positionContent.text);
         }else{
-          ToastUtil.showInfo("该条码已装扫描");
+          ToastUtil.showInfo("该条码已被扫描");
         }
 
         //_onEvent("8011");

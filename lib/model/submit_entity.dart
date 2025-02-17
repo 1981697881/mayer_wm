@@ -53,7 +53,21 @@ class SubmitEntity {
       Model['msg'] = e.error.toString();
       return jsonEncode(Model);
     }
-  }static Future<String> saveSales(
+  }
+  static Future<String> saveBarcode(
+      List<dynamic> map) async {
+    try {
+      API api = new API();
+      final response = await HttpUtils.post(await api.BARCODE_SAVE(), data: map);
+      return jsonEncode(response);
+    } on DioError catch (e) {
+      Map<String, dynamic> Model = Map();
+      Model['success'] = false;
+      Model['msg'] = e.error.toString();
+      return jsonEncode(Model);
+    }
+  }
+  static Future<String> saveSales(
       Map<String, dynamic> map) async {
     try {
       API api = new API();

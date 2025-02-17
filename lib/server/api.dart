@@ -12,6 +12,10 @@ class API {
   Future<String> CURRENCY_URL() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString('url') + '/api/billList/queryBillList';
+  }//单据装箱查询
+  Future<String> CURRENCYPICK_URL() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString('url') + '/api/billList/queryBillListP';
   }
   //盘点方案查询
   Future<String> CURRENCY_INVURL() async {
@@ -127,6 +131,10 @@ class API {
   Future<String> BARCODE_SCAN() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString('url') + '/barcodelist/barcodeScan';
+  }//条码清单保存
+  Future<String> BARCODE_SAVE() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString('url') + '/barcodelist/saveBarcodeEntry';
   }
   //查询库位
   Future<String> STOCK_PLACE() async {

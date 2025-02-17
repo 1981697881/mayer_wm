@@ -124,15 +124,13 @@ class _ListingPageState
     DateTime dateTime = DateTime.now();
     var nowDate = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
     selectData[DateMode.YMD] = nowDate;
-
+    //_onEvent("CN0123");
     /// 开启监听
     if (_subscription == null) {
       _subscription = scannerPlugin
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    //_onEvent("BN154");
-    //_onEvent("PGS1126050411;;;80;;1547418307;0;1");
     EasyLoading.dismiss();
   }
 
@@ -202,6 +200,7 @@ class _ListingPageState
     userMap['type'] = 2;
     userMap['billNo'] = this.fBillNo;
     String order = await CurrencyEntity.polling(userMap);
+
     if (!jsonDecode(order)['success']) {
       ToastUtil.errorDialog(context, jsonDecode(order)['msg']);
       return;
@@ -307,8 +306,8 @@ class _ListingPageState
             ToastUtil.showInfo("库位不存在");
           }else{
             this._positionContent.text = _code;
+            //_onEvent("2502110083");
           }
-          //_onEvent("PGS1126050411;;;80;;1547418307;0;1");
         } else {
           ToastUtil.showInfo(jsonDecode(order)['msg']);
         }
@@ -318,10 +317,10 @@ class _ListingPageState
           this._labelContent.text = '';
         }else{
           if(materialCode.indexOf(_code) == -1){
-            materialCode.add(_code);
+
             await this.getMaterialList("", _code, "");
           }else{
-            ToastUtil.showInfo("该条码已装扫描");
+            ToastUtil.showInfo("该条码已被扫描");
           }
           //_onEvent("8011");
         }
@@ -338,6 +337,7 @@ class _ListingPageState
       ToastUtil.showInfo(jsonDecode(order)['msg']);
       return;
     }
+    materialCode.add(_code);
     Map<String, dynamic> materialDate = Map();
     materialDate = jsonDecode(order)['data'];
     FDate = formatDate(DateTime.now(), [
@@ -499,7 +499,12 @@ class _ListingPageState
                   "value": materialDate['remainQty']
                 }
               });
-
+              arr.add({
+                "title": "操作",
+                "name": "",
+                "isHide": false,
+                "value": {"label": "", "value": ""}
+              });
             }else{
               Map<String, dynamic> inventoryMap = Map();
               inventoryMap['number'] = materialDate['number'];
@@ -558,7 +563,12 @@ class _ListingPageState
                       "value": materialDate['remainQty']
                     }
                   });
-
+                  arr.add({
+                    "title": "操作",
+                    "name": "",
+                    "isHide": false,
+                    "value": {"label": "", "value": ""}
+                  });
                   /*showDialog(context: context,
                       builder: (context) {
                         return AlertDialog(
@@ -677,6 +687,12 @@ class _ListingPageState
                       "label": materialDate['remainQty'],
                       "value": materialDate['remainQty']
                     }
+                  });
+                  arr.add({
+                    "title": "操作",
+                    "name": "",
+                    "isHide": false,
+                    "value": {"label": "", "value": ""}
                   });
                 }
               }else{
@@ -894,6 +910,32 @@ class _ListingPageState
                                 }
                               },
                             ),
+                          ])),
+                ),
+                divider,
+              ]),
+            );
+          }else if (j == 5) {
+            comList.add(
+              Column(children: [
+                Container(
+                  color: Colors.white,
+                  child: ListTile(
+                      title: Text(this.hobby[i][j]["title"] +
+                          '：' +
+                          this.hobby[i][j]["value"]["label"].toString()),
+                      trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new FlatButton(
+                              color: Colors.red,
+                              textColor: Colors.white,
+                              child: new Text('删除'),
+                              onPressed: () {
+                                this.hobby.removeAt(i);
+                                setState(() {});
+                              },
+                            )
                           ])),
                 ),
                 divider,

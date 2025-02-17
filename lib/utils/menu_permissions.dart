@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mayer_wm/views/index/index_page.dart';
+import 'package:mayer_wm/views/production/barcode_outbound.dart';
+import 'package:mayer_wm/views/production/barcode_storage.dart';
 import 'package:mayer_wm/views/production/custody_return_detail.dart';
 import 'package:mayer_wm/views/production/custody_return_page.dart';
 import 'package:mayer_wm/views/production/custody_stocking_detail.dart';
@@ -217,23 +219,23 @@ class MenuPermissions {
           break;
       }*/
     }
-   /* menu.add({
-      "icon": Icons.vertical_align_top,
-      "text": "上架",
+    /*menu.add({
+      "icon": "flight_land",
+      "text": "条码入库",
       "parentId": 5,
       "color": Colors.pink.withOpacity(0.7),
-      "router": ListingPage(FBillNo: null, tranType: null),
+      "router": "BarcodeStorage",
       "source": '',
     });
     menu.add({
-      "icon": Icons.vertical_align_bottom,
-      "text": "下架",
+      "icon": "flight_takeoff",
+      "text": "条码出库",
       "parentId": 5,
       "color": Colors.pink.withOpacity(0.7),
-      "router": OffshelfPage(tranType: null),
+      "router": "BarcodeOutbound",
       "source": '',
     });*/
-    /*menu.add({
+    /*menu.add({2
       "icon": Icons.loupe,
       "text": "外购入库",
       "parentId": 1,

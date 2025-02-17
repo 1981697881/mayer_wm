@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mayer_wm/views/index/index_page.dart';
+import 'package:mayer_wm/views/production/barcode_outbound.dart';
+import 'package:mayer_wm/views/production/barcode_storage.dart';
 import 'package:mayer_wm/views/production/custody_return_detail.dart';
 import 'package:mayer_wm/views/production/custody_return_page.dart';
 import 'package:mayer_wm/views/production/custody_stocking_detail.dart';
@@ -38,6 +40,8 @@ class MenuRouts{
       "ShiftPutPage": (context, {arguments}) => ShiftPutPage(FBillNo: null,tranType: arguments),
       "ListingPage": (context, {arguments}) => ListingPage(FBillNo: null,tranType: arguments),
       "OffshelfPage": (context, {arguments}) => OffshelfPage(tranType: arguments),
+      "BarcodeStorage": (context, {arguments}) => BarcodeStorage(tranType: arguments),
+      "BarcodeOutbound": (context, {arguments}) => BarcodeOutbound(tranType: arguments),
       "StockPage": (context) => StockPage(),
       "PackingPage": (context) => PackingPage(),
     };
