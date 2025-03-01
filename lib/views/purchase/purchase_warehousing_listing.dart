@@ -127,7 +127,9 @@ class _PurchaseWarehousingListingState
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    //_onEvent("8011");
+    //_onEvent("CN0123");
+    //_onEvent("B23");
+    getStockList();
     EasyLoading.dismiss();
   }
 
@@ -142,6 +144,21 @@ class _PurchaseWarehousingListingState
     if (_subscription != null) {
       _subscription!.cancel();
     }
+  }
+  //获取仓库
+  getStockList() async {
+    Map<String, dynamic> userMap = Map();
+    String res = await CurrencyEntity.getStock(userMap);
+    if (jsonDecode(res)['success']) {
+      stockListObj = jsonDecode(res)['data'];
+      stockListObj.forEach((element) {
+        stockList.add(element['FName']);
+      });
+    }else{
+      ToastUtil.errorDialog(context,
+          jsonDecode(res)['msg']);
+    }
+
   }
   //推荐路径
   getRecomentSPPath() async {
@@ -291,6 +308,7 @@ class _PurchaseWarehousingListingState
           ToastUtil.showInfo("库位不存在");
         }else{
           this._positionContent.text = _code;
+          //_onEvent("PGS1115040311");
         }
         //_onEvent("PGH8110110011;;;12;;1037246772;0;1");
       } else {
@@ -356,6 +374,18 @@ class _PurchaseWarehousingListingState
       var barcodeNum = materialDate['remainQty'].toString();
       var barcodeQuantity = materialDate['remainQty'].toString();
       var fsn = barcodeNum;
+      var stockNumber;
+      var stockName;
+      if(materialDate["FDefaultStockNumber"] == "" || materialDate["FDefaultStockNumber"] == null){
+        stockNumber = "31";
+      }else{
+        stockNumber = materialDate["FDefaultStockNumber"];
+      }
+      for(var stockItem in stockListObj){
+        if(stockItem["FFullNumber"] == stockNumber){
+          stockName = stockItem["FFullName"];
+        }
+      }
       /*var msg = "";
       var orderIndex = 0;
       for (var value in orderDate) {
@@ -438,8 +468,14 @@ class _PurchaseWarehousingListingState
           "isHide": false,
           "value": {"label": "", "value": ""}
         });
+        arr.add({
+          "title": "库别",
+          "name": "",
+          "isHide": false,
+          "value": {"label": stockName, "value": stockNumber}
+        });
 
-        hobby.add(arr);
+        hobby.insert(0, arr);
       }
       setState(() {
         EasyLoading.dismiss();
@@ -820,6 +856,7 @@ class _PurchaseWarehousingListingState
         Map<String, dynamic> FEntityItem = Map();
         FEntityItem['uuid'] = element[0]['value']['scanCode'][0];
         FEntityItem['positions'] = element[0]['value']['value'];
+        FEntityItem['stockNumber'] = element[3]['value']['value'];
         FEntityItem['srcBillNo'] = this.orderTranType + "-"+ this.fBillNo;
         FEntityItem['type'] = 1;
         /*var fSerialSub = [];

@@ -365,7 +365,7 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
-   // _onEvent("PGS11A1040211;;;15;;1637347079;0;28");
+    //_onEvent("PGS1115040311");
   }
 
   void _onEvent(event) async {
@@ -418,6 +418,10 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
       var barCodeScan = materialDate;
       if(materialDate['quantity'] == null || materialDate['quantity']<1){
         ToastUtil.showInfo("条码数量为0");
+        return;
+      }
+      if(materialDate['inQty'] != null && materialDate['inQty']>0){
+        ToastUtil.showInfo("该条码已入库");
         return;
       }
       var barcodeNum = materialDate['quantity'].toString();
