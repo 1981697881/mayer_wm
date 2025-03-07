@@ -14,6 +14,7 @@ import 'package:mayer_wm/views/production/picking_page.dart';
 import 'package:mayer_wm/views/production/pipe_removal_page.dart';
 import 'package:mayer_wm/views/production/pipe_shelving_page.dart';
 import 'package:mayer_wm/views/production/stock_up_page.dart';
+import 'package:mayer_wm/views/production/warehousing_confirm_page.dart';
 import 'package:mayer_wm/views/production/warehousing_page.dart';
 import 'package:mayer_wm/views/purchase/purchase_warehousing_page.dart';
 import 'package:mayer_wm/views/stock/allocation_page.dart';
@@ -30,6 +31,7 @@ class MenuRouts{
       "StockUpPage": (content, {arguments}) => StockUpPage(tranType: arguments),
       "PickingPage": (context, {arguments}) => PickingPage(tranType: arguments),
       "WarehousingPage": (context, {arguments}) => WarehousingPage(tranType: arguments),
+      "WarehousingConfirmPage": (context, {arguments}) => WarehousingConfirmPage(tranType: arguments),
       "QuantityTransfer": (context, {arguments}) => QuantityTransfer(tranType: arguments),
       "CustodyWarehousingPage": (context, {arguments}) => CustodyWarehousingPage(tranType: arguments),
       "CustodyStockingDetail": (context, {arguments}) => CustodyStockingDetail(FBillNo: null,tranType: arguments),

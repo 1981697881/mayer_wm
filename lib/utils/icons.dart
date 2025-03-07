@@ -21,6 +21,9 @@ class MenuIcon{
       'view_quilt': Icons.view_quilt,
       'vertical_align_top': Icons.vertical_align_top,
       'vertical_align_bottom': Icons.vertical_align_bottom,
+      'flip': Icons.flip,
+      'flight_land': Icons.flight_land,
+      'flight_takeoff': Icons.flight_takeoff,
     };
     return iconMap;
 

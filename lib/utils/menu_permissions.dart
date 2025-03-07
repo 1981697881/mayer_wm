@@ -220,6 +220,13 @@ class MenuPermissions {
       }*/
     }
     /*menu.add({
+      "icon": "flip",
+      "text": "入库确认",
+      "parentId": 5,
+      "color": Colors.pink.withOpacity(0.7),
+      "router": "WarehousingConfirmPage",
+      "source": '',
+    });*//*menu.add({
       "icon": "flight_land",
       "text": "条码入库",
       "parentId": 5,
