@@ -355,13 +355,13 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       }
       var number = 0;
       var barCodeScan = materialDate;
-      var barcodeNum = materialDate['remainQty'].toString();
-      var barcodeQuantity = materialDate['remainQty'].toString();
-      var fsn = materialDate['remainQty'].toString();
-        if(materialDate['remainQty'] == null || materialDate['remainQty']<1){
-          ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
-          return;
-        }
+      var barcodeNum = materialDate['quantity'].toString();
+      var barcodeQuantity = materialDate['quantity'].toString();
+      var fsn = materialDate['quantity'].toString();
+      if(materialDate['quantity'] == null || materialDate['quantity']<1){
+        ToastUtil.showInfo("条码数量为0");
+        return;
+      }
       var msg = "";
       var orderIndex = 0;
       for (var value in orderDate) {
