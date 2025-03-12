@@ -210,7 +210,6 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       this.supplierNumber = orderDate[0]["FSupplyNumber"];
       this.orderTranType = orderDate[0]["FTranType"];
       for(var value in orderDate){
-        if(fNumber.lastIndexOf(value['FItemNumber']) == -1){
           fNumber.add(value['FItemNumber']);
           List arr = [];
           arr.add({
@@ -297,7 +296,6 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
             "value": {"label": "", "value": "", "itemList": []}
           });
           hobby.add(arr);
-        }
       }
       setState(() {
         EasyLoading.dismiss();
@@ -311,7 +309,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       ToastUtil.showInfo('无数据');
     }
     //_onEvent("PFS1083070000;;;250;;1757432737;0;2407100002");
-    //_onEvent("2503050888");
+    _onEvent("2503110041");
   }
 
   void _onEvent(event) async {
@@ -367,6 +365,8 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       for (var value in orderDate) {
         if (value['FItemNumber'] == materialDate['number']) {
           msg = "";
+          print(fNumber.lastIndexOf(materialDate['number']));
+          print(orderIndex);
           if (fNumber.lastIndexOf(materialDate['number']) == orderIndex) {
             break;
           }
