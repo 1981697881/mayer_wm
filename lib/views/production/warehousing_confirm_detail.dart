@@ -292,7 +292,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
           arr.add({
             "title": "条码列表",
             "name": "",
-            "isHide": true,
+            "isHide": false,
             "value": {"label": "", "value": "", "itemList": []}
           });
           hobby.add(arr);
@@ -309,7 +309,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       ToastUtil.showInfo('无数据');
     }
     //_onEvent("PFS1083070000;;;250;;1757432737;0;2407100002");
-    _onEvent("2503110041");
+    //_onEvent("2503110041");
   }
 
   void _onEvent(event) async {
@@ -326,11 +326,13 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
     Map<String, dynamic> userMap = Map();
     userMap['uuid'] = code;
     String order = await CurrencyEntity.barcodeScan(userMap);
+    Map<String, dynamic> materialDate = Map();
     if(!jsonDecode(order)['success']){
       ToastUtil.showInfo(jsonDecode(order)['msg']);
       return;
+    }else{
+
     }
-    Map<String, dynamic> materialDate = Map();
     materialDate = jsonDecode(order)['data'];
     FDate = formatDate(DateTime.now(), [
       yyyy,
