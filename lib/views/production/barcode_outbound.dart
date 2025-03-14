@@ -370,8 +370,8 @@ class _BarcodeOutboundState extends State<BarcodeOutbound> {
       }
       var number = 0;
       var barCodeScan = materialDate;
-      var barcodeNum = materialDate['quantity'].toString();
-      var barcodeQuantity = materialDate['quantity'].toString();
+      var barcodeNum = materialDate['remainQty'].toString();
+      var barcodeQuantity = materialDate['remainQty'].toString();
       var msg = "";
       var orderIndex = 0;
       var fsn = (materialDate['defaultStockNumber']==null?"":materialDate['defaultStockNumber'])+"/"+(materialDate['location']==null?"":materialDate['location']);
@@ -446,7 +446,7 @@ class _BarcodeOutboundState extends State<BarcodeOutbound> {
           "name": "FRealQty",
           "isHide": false,
           /*value[12]*/
-          "value": {"label": materialDate["quantity"].toString(), "value": materialDate["quantity"].toString(),"remainder": "0","representativeQuantity": materialDate["quantity"].toString()}
+          "value": {"label": materialDate["remainQty"].toString(), "value": materialDate["remainQty"].toString(),"remainder": "0","representativeQuantity": materialDate["remainQty"].toString()}
         });
         arr.add({
           "title": "仓库",
@@ -495,7 +495,7 @@ class _BarcodeOutboundState extends State<BarcodeOutbound> {
           "title": "最后扫描数量",
           "name": "FLastQty",
           "isHide": true,
-          "value": {"label": materialDate["quantity"].toString(), "value": materialDate["quantity"].toString(),"remainder": "0","representativeQuantity": materialDate["quantity"].toString()}
+          "value": {"label": materialDate["remainQty"].toString(), "value": materialDate["remainQty"].toString(),"remainder": "0","representativeQuantity": materialDate["remainQty"].toString()}
         });
         hobby.add(arr);
       }

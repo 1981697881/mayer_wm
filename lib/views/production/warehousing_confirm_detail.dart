@@ -309,7 +309,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       ToastUtil.showInfo('无数据');
     }
     //_onEvent("PFS1083070000;;;250;;1757432737;0;2407100002");
-    //_onEvent("2503110041");
+    _onEvent("PAD2116080811;10.3;10.9;20");
   }
 
   void _onEvent(event) async {
@@ -331,9 +331,13 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       ToastUtil.showInfo(jsonDecode(order)['msg']);
       return;
     }else{
-
+      materialDate = jsonDecode(order)['data'];
+      var codeList = code.split(";");
+      if (materialDate == null && codeList.length>1) {
+        materialDate['quantity'] = codeList[3];
+        materialDate['number'] = codeList[0];
+      }
     }
-    materialDate = jsonDecode(order)['data'];
     FDate = formatDate(DateTime.now(), [
       yyyy,
       "-",
