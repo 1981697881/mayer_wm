@@ -309,7 +309,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       ToastUtil.showInfo('无数据');
     }
     //_onEvent("PFS1083070000;;;250;;1757432737;0;2407100002");
-    _onEvent("PAD2116080811;10.3;10.9;20");
+    //_onEvent("PAS6440100011;10.3;10.9;20");
   }
 
   void _onEvent(event) async {
@@ -328,15 +328,15 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
     String order = await CurrencyEntity.barcodeScan(userMap);
     Map<String, dynamic> materialDate = Map();
     if(!jsonDecode(order)['success']){
-      ToastUtil.showInfo(jsonDecode(order)['msg']);
-      return;
+      var codeList = code.split(";");
+      if (codeList.length>1) {
+        materialDate['quantity'] = double.parse(codeList[3]);
+        materialDate['number'] = codeList[0];
+        materialDate['flag'] = 0;
+      }
     }else{
       materialDate = jsonDecode(order)['data'];
-      var codeList = code.split(";");
-      if (materialDate == null && codeList.length>1) {
-        materialDate['quantity'] = codeList[3];
-        materialDate['number'] = codeList[0];
-      }
+
     }
     FDate = formatDate(DateTime.now(), [
       yyyy,
@@ -1229,7 +1229,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
                 divider,
               ]),
             );
-          }/* else if ( j == 11) {
+          } else if ( j == 11) {
             var itemList = this.hobby[i][0]["value"]['kingDeeCode'];
             List<Widget> listTitle = [];
             var listTitleNum = 1;
@@ -1260,7 +1260,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
                 divider,
               ]),
             );
-          }*/else if ( j == 11) {
+          }else if ( j == 11) {
             var itemList = this.hobby[i][0]["value"]['kingDeeCode'];
             List<Widget> listTitle = [];
             var itemNumber = 1;
