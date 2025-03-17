@@ -1119,7 +1119,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
                   child: ListTile(
                       title: Text(this.hobby[i][j]["title"] +
                           '：' +
-                          this.hobby[i][j]["value"]["label"].toString()+'剩余('+this.hobby[i][j]["value"]["remainder"].toString()+')'),
+                          double.parse(this.hobby[i][j]["value"]["label"]).toInt().toString()+'剩余('+this.hobby[i][j]["value"]["remainder"].toString()+')'),
                       trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -1429,7 +1429,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
           this.orderDate = [];
           this.FBillNo = '';
           ToastUtil.showInfo('提交成功');
-          Navigator.of(context).pop("refresh");
+          //Navigator.of(context).pop("refresh");
         });
       } else {
         setState(() {
