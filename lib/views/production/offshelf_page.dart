@@ -130,8 +130,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
     getStockList();
     //_onEvent("2502110083");
     // getBillNo();
-    //_onEvent("PGH8110110011;;;12;;1037246772;0;1");
-    //_onEvent("urjKKnXu");
+    //_onEvent("2502191054");
     EasyLoading.dismiss();
   }
 
@@ -1428,6 +1427,10 @@ class _OffshelfPageState extends State<OffshelfPage> {
           this.hobby = [];
           this.orderDate = [];
           this.FBillNo = '';
+          this.productNumber = '';
+          this.productName = '';
+          this.recommendedPathList = [];
+          this.isSubmit = false;
           ToastUtil.showInfo('提交成功');
           //Navigator.of(context).pop("refresh");
         });
