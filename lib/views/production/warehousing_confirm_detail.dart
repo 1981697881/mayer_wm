@@ -84,6 +84,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
   final scanIcon = Icon(Icons.filter_center_focus);
   static const scannerPlugin =
   const EventChannel('com.shinow.pda_scanner/plugin');
+  final ScrollController _scrollController = ScrollController();
   StreamSubscription? _subscription;
   var _code;
   var _FNumber;
@@ -160,14 +161,23 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
   @override
   void dispose() {
     this._textNumber.dispose();
+    _scrollController.dispose();
     super.dispose();
-
     /// 取消监听
     if (_subscription != null) {
       _subscription!.cancel();
     }
   }
-
+  void _scrollToIndex(index,addIndex) {
+    // 计算列表中特定索引的位置
+    double scrollTo = ((index)* 350)+(addIndex*60.0) + 60;  // 假设每个列表项的高度是56.0
+    // 使用animateTo滚动到该位置，动画时长200毫秒
+    _scrollController.animateTo(
+      scrollTo,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+    );
+  }
   // 查询数据集合
   List hobby = [];
   List fNumber = [];
@@ -309,7 +319,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       ToastUtil.showInfo('无数据');
     }
     //_onEvent("PFS1083070000;;;250;;1757432737;0;2407100002");
-    //_onEvent("PAS6440100011;10.3;10.9;20");
+    //_onEvent("PAS641E050111;10.3;10.9;20");
   }
 
   void _onEvent(event) async {
@@ -327,12 +337,14 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
     userMap['uuid'] = code;
     String order = await CurrencyEntity.barcodeScan(userMap);
     Map<String, dynamic> materialDate = Map();
+    var barCodeScan = materialDate;
     if(!jsonDecode(order)['success']){
       var codeList = code.split(";");
       if (codeList.length>1) {
         materialDate['quantity'] = double.parse(codeList[3]);
         materialDate['number'] = codeList[0];
         materialDate['flag'] = 0;
+        barCodeScan['isEnable'] = 2;
       }
     }else{
       materialDate = jsonDecode(order)['data'];
@@ -358,7 +370,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
         return;
       }
       var number = 0;
-      var barCodeScan = materialDate;
+
       var barcodeNum = materialDate['quantity'].toString();
       var barcodeQuantity = materialDate['quantity'].toString();
       var fsn = materialDate['quantity'].toString();
@@ -784,6 +796,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
+    _scrollToIndex(fNumber.indexOf(materialDate['number']),this.hobby[fNumber.indexOf(materialDate['number'])][0]["value"]["kingDeeCode"].length);
   }
 
   void _onError(Object error) {
@@ -1629,7 +1642,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
           body: Column(
             children: <Widget>[
               Expanded(
-                child: ListView(children: <Widget>[
+                child: ListView(controller: _scrollController,children: <Widget>[
                   Column(
                     children: [
                       Container(
