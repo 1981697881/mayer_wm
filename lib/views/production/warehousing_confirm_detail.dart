@@ -318,8 +318,9 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
-    //_onEvent("PFS1083070000;;;250;;1757432737;0;2407100002");
-    //_onEvent("PAS641E050111;10.3;10.9;20");
+    /*_onEvent("PAS6120030011;10.3;10.9;20");
+    _onEvent("2503180657");
+    _onEvent("2503180653");*/
   }
 
   void _onEvent(event) async {
@@ -337,18 +338,19 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
     userMap['uuid'] = code;
     String order = await CurrencyEntity.barcodeScan(userMap);
     Map<String, dynamic> materialDate = Map();
-    var barCodeScan = materialDate;
+    Map<String, dynamic> barCodeScan = Map();
     if(!jsonDecode(order)['success']){
       var codeList = code.split(";");
       if (codeList.length>1) {
         materialDate['quantity'] = double.parse(codeList[3]);
         materialDate['number'] = codeList[0];
         materialDate['flag'] = 0;
+        barCodeScan = materialDate;
         barCodeScan['isEnable'] = 2;
       }
     }else{
       materialDate = jsonDecode(order)['data'];
-
+      barCodeScan = materialDate;
     }
     FDate = formatDate(DateTime.now(), [
       yyyy,
@@ -1247,7 +1249,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
             List<Widget> listTitle = [];
             var listTitleNum = 1;
             for(var dataItem in itemList){
-              listTitle.add(
+              listTitle.insert(0,
                 ListTile(
                   title: Text(listTitleNum.toString() +
                       '：' +
@@ -1273,7 +1275,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
                 divider,
               ]),
             );
-          }else if ( j == 11) {
+          }/*else if ( j == 11) {
             var itemList = this.hobby[i][0]["value"]['kingDeeCode'];
             List<Widget> listTitle = [];
             var itemNumber = 1;
@@ -1386,7 +1388,7 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
                 divider,
               ]),
             );
-          } else {
+          }*/ else {
             comList.add(
               Column(children: [
                 Container(
