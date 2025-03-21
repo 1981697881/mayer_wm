@@ -114,7 +114,6 @@ class _ShiftOutPageState extends State<ShiftOutPage> {
     //_onEvent("PGS1114020211;;;1080;;1834537142;0;2407100003");
   }
   _initState() {
-    getBillNo();
     /// 开启监听
     _subscription = scannerPlugin
         .receiveBroadcastStream()

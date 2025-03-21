@@ -1271,7 +1271,7 @@ class _RetrievalDetailState extends State<RetrievalDetail> {
       Model['fsupplyID'] = this.customerNumber;
       var FEntity = [];
       var hobbyIndex = 0;
-      this.hobby.forEach((element) {
+      for(var element in this.hobby){
         if (element[3]['value']['value'] != '0' &&
             element[4]['value']['value'] != '') {
           Map<String, dynamic> FEntityItem = Map();
@@ -1279,7 +1279,7 @@ class _RetrievalDetailState extends State<RetrievalDetail> {
           FEntityItem['fqty'] = element[3]['value']['value'];
           FEntityItem['fentryId'] = hobbyIndex+1;
           if (this.isScanWork) {
-            FEntityItem['finBillNo'] = this.fBillNo;
+            FEntityItem['finBillNo'] = await getBillNo();
             FEntityItem['fauxprice'] = orderDate[hobbyIndex]['Fauxprice'] == null?"0":orderDate[hobbyIndex]['Fauxprice'];
             FEntityItem['famount'] = orderDate[hobbyIndex]['Fauxprice'] == null?"0":orderDate[hobbyIndex]['Fauxprice'];
            FEntityItem['fsourceBillNo'] = orderDate[hobbyIndex]['FBillNo'];
@@ -1320,7 +1320,7 @@ class _RetrievalDetailState extends State<RetrievalDetail> {
           FEntity.add(FEntityItem);
         }
         hobbyIndex++;
-      });
+      };
       if (FEntity.length == 0) {
         this.isSubmit = false;
         ToastUtil.showInfo('请输入数量和仓库');
