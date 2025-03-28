@@ -2246,7 +2246,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
               PreEntityItem['packNo'] = itemCode[3];
               PreEntityItem['date'] = FDate;
               PreEntityItem['barcode'] = itemCode[0]+'-'+itemCode[1];
-              PreEntityItem['orderBillNo'] = this.fBillNo;
+              PreEntityItem['orderBillNo'] = this.orderTranType + "-"+ fBillNo;
               PreEntityItem['qty'] = itemCode[1];
               PreEntityItem['seq'] = entryIndex+1;
               PreEntityItem['tranType'] = 102;
