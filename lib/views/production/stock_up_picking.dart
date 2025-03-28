@@ -2238,7 +2238,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
               PackingEntityItem['barcode'] = itemCode[0];
               PackingEntityItem['qty'] = itemCode[1];
               PackingEntityItem['date'] = FDate;
-              PackingEntityItem['orderBillNo'] = fBillNo;
+              PackingEntityItem['orderBillNo'] = this.orderTranType + "-"+ fBillNo;
               PackingEntityItem['printCount'] = 1;
               PackingEntityItem['tranType'] = tranType;
               PackingEntity.add(PackingEntityItem);
