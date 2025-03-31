@@ -1081,7 +1081,8 @@ class _BarcodeStorageState extends State<BarcodeStorage> {
           this.orderDate = [];
           this.FBillNo = '';
           ToastUtil.showInfo('提交成功');
-          Navigator.of(context).pop("refresh");
+          //Navigator.of(context).pop("refresh");
+          this.isSubmit = false;
         });
       } else {
         setState(() {
