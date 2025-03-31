@@ -1596,7 +1596,7 @@ class _PickingDetailState extends State<PickingDetail> {
       var hobbyIndex = 0;
       var itemIndex = 0;
       this.hobby.forEach((element) {
-        if (element[9]['value']['value'] != '0') {
+        if (element[9]['value']['value'] != '0' && element[9]['value']['value'] != '') {
           var kingDeeCode = element[0]['value']['kingDeeCode'];
           for (int subj = 0; subj < kingDeeCode.length; subj++) {
             var fSerialSub = [];

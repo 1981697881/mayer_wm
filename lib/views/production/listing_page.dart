@@ -384,7 +384,7 @@ class _ListingPageState
           this._labelContent.text = code;
           var number = 0;
           var barCodeScan = materialDate;
-          if(materialDate['quantity'] == null || materialDate['quantity']<0){
+          if(materialDate['remainQty'] == null || materialDate['remainQty']<0){
             ToastUtil.showInfo("条码无剩余数量");
             return;
           }
@@ -392,8 +392,8 @@ class _ListingPageState
             ToastUtil.showInfo("扫描条码无库位信息");
             return;
           }
-          var barcodeNum = materialDate['quantity'].toString();
-          var barcodeQuantity = materialDate['quantity'].toString();
+          var barcodeNum = materialDate['remainQty'].toString();
+          var barcodeQuantity = materialDate['remainQty'].toString();
           var fsn = barcodeNum;
           /*var msg = "";
       var orderIndex = 0;

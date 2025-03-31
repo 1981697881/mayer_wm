@@ -1293,7 +1293,7 @@ class _CustodyStockingDetailState extends State<CustodyStockingDetail> {
       var hobbyIndex = 0;
       var itemIndex = 0;
       this.hobby.forEach((element) {
-        if (element[9]['value']['value'] != '0') {
+        if (element[9]['value']['value'] != '0' && element[9]['value']['value'] != '') {
           /*Map<String, dynamic> FEntityItem = Map();
           FEntityItem['fauxqty'] = element[9]['value']['value'];
           FEntityItem['fqty'] = element[9]['value']['value'];

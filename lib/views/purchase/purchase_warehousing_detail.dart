@@ -365,7 +365,7 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
-    //_onEvent("PGS1115040311");
+    //_onEvent("2503300458");
   }
 
   void _onEvent(event) async {
@@ -1371,7 +1371,7 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
       var FEntity = [];
       var hobbyIndex = 0;
       this.hobby.forEach((element) {
-        if (element[9]['value']['value'] != '0' &&
+        if (element[9]['value']['value'] != '0' && element[9]['value']['value'] != '' &&
             element[4]['value']['value'] != '') {
           Map<String, dynamic> FEntityItem = Map();
           FEntityItem['fauxqty'] = element[9]['value']['value'];

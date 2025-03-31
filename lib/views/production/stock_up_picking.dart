@@ -2187,7 +2187,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
       var hobbyIndex = 0;
       var entryIndex = 0;
       for (var element in this.hobby) {
-        if (element[9]['value']['value'] != '0') {
+        if (element[9]['value']['value'] != '0' && element[9]['value']['value'] != '') {
           var kingDeeCode = element[0]['value']['kingDeeCode'];
           for (int subj = 0; subj < kingDeeCode.length; subj++) {
             Map<String, dynamic> subObj = Map();
