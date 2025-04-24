@@ -169,8 +169,10 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
     }
   }
   void _scrollToIndex(index,addIndex) {
+    print(index);
+    print(addIndex);
     // 计算列表中特定索引的位置
-    double scrollTo = ((index)* 350)+(addIndex*60.0) + 60;  // 假设每个列表项的高度是56.0
+    double scrollTo = ((index)* 420)+(addIndex*56.0) + 60;  // 假设每个列表项的高度是56.0
     // 使用animateTo滚动到该位置，动画时长200毫秒
     _scrollController.animateTo(
       scrollTo,
@@ -318,9 +320,8 @@ class _WarehousingConfirmDetailState extends State<WarehousingConfirmDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
-    /*_onEvent("PAS6120030011;10.3;10.9;20");
-    _onEvent("2503180657");
-    _onEvent("2503180653");*/
+    //_onEvent("2504240024");
+    //_onEvent("2504240056");
   }
 
   void _onEvent(event) async {
