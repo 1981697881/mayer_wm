@@ -330,7 +330,7 @@ class _PickingDetailState extends State<PickingDetail> {
           "title": "规格型号",
           "isHide": false,
           "name": "FMaterialIdFSpecification",
-          "value": {"label": value['FItemModel'], "value": value['FItemModel']}
+          "value": {"label": value["FItemModel"]==null?'':value["FItemModel"], "value": value["FItemModel"]==null?'':value["FItemModel"]}
         });
         arr.add({
           "title": "重量",
@@ -908,7 +908,7 @@ class _PickingDetailState extends State<PickingDetail> {
   }
   void _scrollToIndex(index,addIndex) {
     // 计算列表中特定索引的位置
-    double scrollTo = ((index)* 448)+(addIndex*58.0) + 300;  // 假设每个列表项的高度是56.0
+    double scrollTo = ((index)* 466.0) + 300.0;  // 假设每个列表项的高度是56.0
     // 使用animateTo滚动到该位置，动画时长200毫秒
     _scrollController.animateTo(
       scrollTo,

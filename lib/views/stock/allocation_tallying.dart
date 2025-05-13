@@ -266,7 +266,7 @@ class _AllocationTallyingState extends State<AllocationTallying> {
           "title": "规格型号",
           "isHide": false,
           "name": "FMaterialIdFSpecification",
-          "value": {"label": value['FItemModel'], "value": value['FItemModel']}
+          "value": {"label": value["FItemModel"] == null ? '' : value["FItemModel"], "value": value["FItemModel"] == null ? '' : value["FItemModel"]}
         });
         arr.add({
           "title": "重量",

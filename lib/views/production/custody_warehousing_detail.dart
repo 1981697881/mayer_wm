@@ -866,7 +866,7 @@ class _CustodyWarehousingDetailState extends State<CustodyWarehousingDetail> {
   }
   void _scrollToIndex(index,addIndex) {
     // 计算列表中特定索引的位置
-    double scrollTo = ((index)* 355)+(addIndex*51.0) + 305;  // 假设每个列表项的高度是56.0
+    double scrollTo = ((index)* 410.0) + 240.0;  // 假设每个列表项的高度是56.0
     // 使用animateTo滚动到该位置，动画时长200毫秒
     _scrollController.animateTo(
       scrollTo,
@@ -1168,7 +1168,7 @@ class _CustodyWarehousingDetailState extends State<CustodyWarehousingDetail> {
             comList.add(
               Column(children: [
                 ExpansionTile(
-                  initiallyExpanded: true,
+                  initiallyExpanded: false,
                   title: Text(this.hobby[i][j]["title"] +
                       '：' +
                       listTitle.length.toString()),

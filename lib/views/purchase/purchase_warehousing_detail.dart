@@ -365,7 +365,8 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
-    //_onEvent("2503300458");
+    //_onEvent("2505130105");
+    //_onEvent("2505130107");
   }
 
   void _onEvent(event) async {
@@ -420,10 +421,10 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
         ToastUtil.showInfo("条码数量为0");
         return;
       }
-      if(materialDate['inQty'] != null && materialDate['inQty']>0){
-        ToastUtil.showInfo("该条码已入库");
-        return;
-      }
+      // if(materialDate['inQty'] != null && materialDate['inQty']>0){
+      //   ToastUtil.showInfo("该条码已入库");
+      //   return;
+      // }
       var barcodeNum = materialDate['quantity'].toString();
       var barcodeQuantity = materialDate['quantity'].toString();
       var fsn = barcodeNum;
@@ -841,7 +842,7 @@ class _PurchaseWarehousingDetailState extends State<PurchaseWarehousingDetail> {
   }
   void _scrollToIndex(index,addIndex) {
     // 计算列表中特定索引的位置
-    double scrollTo = ((index)* 448)+(addIndex*58.0) + 360;  // 假设每个列表项的高度是56.0
+    double scrollTo = ((index)* 466.0) + 360.0;  // 假设每个列表项的高度是56.0
     // 使用animateTo滚动到该位置，动画时长200毫秒
     _scrollController.animateTo(
       scrollTo,

@@ -85,6 +85,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
   final divider = Divider(height: 1, indent: 20);
   final rightIcon = Icon(Icons.keyboard_arrow_right);
   final scanIcon = Icon(Icons.filter_center_focus);
+  final ScrollController _scrollController = ScrollController();
   static const scannerPlugin =
   const EventChannel('com.shinow.pda_scanner/plugin');
   StreamSubscription? _subscription;
@@ -219,6 +220,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
   @override
   void dispose() {
     this._textNumber.dispose();
+    _scrollController.dispose();
     this._positionContent.dispose();
     this._labelContent.dispose();
     super.dispose();
@@ -287,7 +289,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
           "title": "规格型号",
           "isHide": false,
           "name": "FMaterialIdFSpecification",
-          "value": {"label": value['FItemModel'], "value": value['FItemModel']}
+          "value": {"label": value["FItemModel"] == null ? '' : value["FItemModel"], "value": value["FItemModel"] == null ? '' : value["FItemModel"]}
         });
         arr.add({
           "title": "重量",
@@ -838,8 +840,18 @@ class _AllocationDetailState extends State<AllocationDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
+    _scrollToIndex(fNumber.indexOf(materialDate['number']),this.hobby[fNumber.indexOf(materialDate['number'])][0]["value"]["kingDeeCode"].length);
   }
-
+  void _scrollToIndex(index,addIndex) {
+    // 计算列表中特定索引的位置
+    double scrollTo = ((index)* 410.0) + 175.0;  // 假设每个列表项的高度是56.0
+    // 使用animateTo滚动到该位置，动画时长200毫秒
+    _scrollController.animateTo(
+      scrollTo,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+    );
+  }
   void _onError(Object error) {
     setState(() {
       _code = "扫描异常";
@@ -1466,7 +1478,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
           body: Column(
             children: <Widget>[
               Expanded(
-                child: ListView(children: <Widget>[
+                child: ListView(controller: _scrollController,children: <Widget>[
                   Column(
                     children: [
                       Container(

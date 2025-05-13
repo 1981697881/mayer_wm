@@ -150,7 +150,7 @@ class _AllocationPageState extends State<AllocationPage> {
           "title": "规格型号",
           "name": "FMaterialIdFSpecification",
           "isHide": false,
-          "value": {"label": value["FItemModel"], "value": value["FItemModel"]}
+          "value": {"label": value["FItemModel"] == null ? '' : value["FItemModel"], "value": value["FItemModel"] == null ? '' : value["FItemModel"]}
         });
         arr.add({
           "title": "单位名称",

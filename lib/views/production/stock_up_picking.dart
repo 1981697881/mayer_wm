@@ -289,7 +289,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
   }
   void _scrollToIndex(index,addIndex) {
     // 计算列表中特定索引的位置
-    double scrollTo = ((index)* 448)+(addIndex*178.0) + 178;  // 假设每个列表项的高度是56.0
+    double scrollTo = ((index)* 466.0) + 175.0;  // 假设每个列表项的高度是56.0
     // 使用animateTo滚动到该位置，动画时长200毫秒
     _scrollController.animateTo(
       scrollTo,
