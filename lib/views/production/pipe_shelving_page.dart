@@ -126,7 +126,7 @@ class _PipeShelvingPageState
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    //_onEvent("8011");
+    // _onEvent("B23");
     EasyLoading.dismiss();
   }
 
@@ -345,6 +345,11 @@ class _PipeShelvingPageState
       this._labelContent.text = code;
       var number = 0;
       var barCodeScan = materialDate;
+      if (materialDate['remainQty'] % 1 == 0) {
+        materialDate['remainQty'] = materialDate['remainQty'].toInt();
+      }if (materialDate['quantity'] % 1 == 0) {
+        materialDate['quantity'] = materialDate['quantity'].toInt();
+      }
       var barcodeNum = materialDate['quantity'].toString();
       var barcodeQuantity = materialDate['quantity'].toString();
       var fsn = barcodeNum;

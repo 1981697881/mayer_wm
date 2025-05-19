@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:date_format/date_format.dart';
 import 'package:decimal/decimal.dart';
+import 'package:mayer_wm/components/text_formatter.dart';
 import 'package:mayer_wm/model/currency_entity.dart';
 import 'package:mayer_wm/model/submit_entity.dart';
 import 'package:mayer_wm/utils/handler_order.dart';
@@ -370,6 +371,9 @@ class _BarcodeOutboundState extends State<BarcodeOutbound> {
       }
       var number = 0;
       var barCodeScan = materialDate;
+      if (materialDate['remainQty'] % 1 == 0) {
+        materialDate['remainQty'] = materialDate['remainQty'].toInt();
+      }
       var barcodeNum = materialDate['remainQty'].toString();
       var barcodeQuantity = materialDate['remainQty'].toString();
       var msg = "";
@@ -648,7 +652,14 @@ class _BarcodeOutboundState extends State<BarcodeOutbound> {
                               style: TextStyle(color: Colors.black87),
                               keyboardType: TextInputType.number,
                               controller: this._textNumber,
-                              decoration: InputDecoration(hintText: "输入"),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly, // 仅允许数字
+                                PositiveIntegerInputFormatter(),       // 处理前导零
+                              ],
+                              decoration: InputDecoration(
+                                labelText: '请输入正整数',
+                                border: OutlineInputBorder(),
+                              ),
                               onChanged: (value) {
                                 setState(() {
                                   this._FNumber = value;

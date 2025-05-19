@@ -114,7 +114,7 @@ class _AllocationPackingState
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    //_onEvent("1012");
+    //_onEvent("B23");
     EasyLoading.dismiss();
   }
 
@@ -191,9 +191,9 @@ class _AllocationPackingState
           "name": "",
           "isHide": false,
           "value": {
-            "label": double.parse(value["Fauxqty"]),
-            "value": double.parse(value["Fauxqty"]),
-            "rateValue": double.parse(value["Fauxqty"])
+            "label": int.parse(value["Fauxqty"]),
+            "value": int.parse(value["Fauxqty"]),
+            "rateValue": int.parse(value["Fauxqty"])
           } /*+value[12]*0.1*/
         });
         hobby.add(arr);
@@ -217,8 +217,6 @@ class _AllocationPackingState
       return;
     }
     _code = event;
-    print(this._positionContent.text);
-    print(1233);
     if (this._positionContent.text == '') {
       Map<String, dynamic> userMap = Map();
       userMap['packNo'] = _code;
@@ -227,7 +225,6 @@ class _AllocationPackingState
         ToastUtil.showInfo("箱号已被使用");
       } else {
         this._positionContent.text = _code;
-        //_onEvent("PGS1140070021;;;500;;2218387278;0;1");
       }
     } else {
       if(materialCode.indexOf(_code) == -1){
@@ -277,6 +274,10 @@ class _AllocationPackingState
       if(materialDate['remainQty'] == null || materialDate['remainQty']<1){
         ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
         return;
+      }
+      // 检查是否为整数
+      if (materialDate['remainQty'] % 1 == 0) {
+        materialDate['remainQty'] = materialDate['remainQty'].toInt();
       }
       var barcodeNum = materialDate['remainQty'].toString();
       var barcodeQuantity = materialDate['remainQty'].toString();
@@ -621,8 +622,8 @@ class _AllocationPackingState
                           Navigator.pop(context);
                           setState(() {
                             if (checkItem == "FLastQty") {
-                              if (double.parse(_FNumber) <=
-                                  double.parse(this.hobby[checkData]
+                              if (int.parse(_FNumber) <=
+                                  int.parse(this.hobby[checkData]
                                   [checkDataChild]["value"]
                                   ['representativeQuantity'])) {
                                 if (this
@@ -638,18 +639,18 @@ class _AllocationPackingState
                                       .length -
                                       1]
                                       .split("-");
-                                  var realQty = 0.0;
+                                  var realQty = 0;
                                   this
                                       .hobby[checkData][0]['value']
                                   ['kingDeeCode']
                                       .forEach((item) {
                                     var qty = item.split("-")[1];
-                                    realQty += double.parse(qty);
+                                    realQty += int.parse(qty);
                                   });
                                   realQty = realQty -
-                                      double.parse(this.hobby[checkData][10]
+                                      int.parse(this.hobby[checkData][10]
                                       ["value"]["label"]);
-                                  realQty = realQty + double.parse(_FNumber);
+                                  realQty = realQty + int.parse(_FNumber);
                                   this.hobby[checkData][10]["value"]
                                   ["remainder"] = (Decimal.parse(
                                       this.hobby[checkData][10]["value"]

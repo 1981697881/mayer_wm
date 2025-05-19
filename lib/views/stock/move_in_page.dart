@@ -331,6 +331,9 @@ class _MoveInPageState
         ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
         return;
       }
+      if (materialDate['remainQty'] % 1 == 0) {
+        materialDate['remainQty'] = materialDate['remainQty'].toInt();
+      }
       var barcodeNum = materialDate['remainQty'].toString();
       var barcodeQuantity = materialDate['remainQty'].toString();
       var fsn = barcodeNum;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:date_format/date_format.dart';
 import 'package:decimal/decimal.dart';
+import 'package:mayer_wm/components/text_formatter.dart';
 import 'package:mayer_wm/model/currency_entity.dart';
 import 'package:mayer_wm/model/submit_entity.dart';
 import 'package:mayer_wm/utils/handler_order.dart';
@@ -391,6 +392,9 @@ class _ListingPageState
           if(listingType && (materialDate['location'] == null || materialDate['location'] == "")){
             ToastUtil.showInfo("扫描条码无库位信息");
             return;
+          }
+          if (materialDate['remainQty'] % 1 == 0) {
+            materialDate['remainQty'] = materialDate['remainQty'].toInt();
           }
           var barcodeNum = materialDate['remainQty'].toString();
           var barcodeQuantity = materialDate['remainQty'].toString();
@@ -891,9 +895,9 @@ class _ListingPageState
                               icon: new Icon(Icons.mode_edit),
                               tooltip: '点击扫描',
                               onPressed: () {
-                                this._textNumber.text = double.parse(this.hobby[i][j]["value"]["label"]).truncate()
+                                this._textNumber.text = int.parse(this.hobby[i][j]["value"]["label"])
                                     .toString();
-                                this._FNumber = double.parse(this.hobby[i][j]["value"]["label"]).truncate()
+                                this._FNumber = int.parse(this.hobby[i][j]["value"]["label"])
                                     .toString();
                                 checkItem = 'FNumber';
                                 this.show = false;
@@ -904,7 +908,7 @@ class _ListingPageState
                                 if (this.hobby[i][j]["value"]["label"] != 0) {
                                   this._textNumber.value =
                                       _textNumber.value.copyWith(
-                                        text: double.parse(this.hobby[i][j]["value"]["label"]).truncate()
+                                        text: int.parse(this.hobby[i][j]["value"]["label"])
                                             .toString(),
                                       );
                                 }
@@ -1005,7 +1009,14 @@ class _ListingPageState
                               style: TextStyle(color: Colors.black87),
                               keyboardType: TextInputType.number,
                               controller: this._textNumber,
-                              decoration: InputDecoration(hintText: "输入"),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly, // 仅允许数字
+                                PositiveIntegerInputFormatter(),       // 处理前导零
+                              ],
+                              decoration: InputDecoration(
+                                labelText: '请输入正整数',
+                                border: OutlineInputBorder(),
+                              ),
                               onChanged: (value) {
                                 setState(() {
                                   this._FNumber = value;
@@ -1022,8 +1033,8 @@ class _ListingPageState
                           Navigator.pop(context);
                           setState(() {
                             if (checkItem == "FLastQty") {
-                              if (double.parse(_FNumber) <=
-                                  double.parse(this.hobby[checkData]
+                              if (int.parse(_FNumber) <=
+                                  int.parse(this.hobby[checkData]
                                   [checkDataChild]["value"]
                                   ['representativeQuantity'])) {
                                 if (this
@@ -1039,18 +1050,18 @@ class _ListingPageState
                                       .length -
                                       1]
                                       .split("-");
-                                  var realQty = 0.0;
+                                  var realQty = 0;
                                   this
                                       .hobby[checkData][0]['value']
                                   ['kingDeeCode']
                                       .forEach((item) {
                                     var qty = item.split("-")[1];
-                                    realQty += double.parse(qty);
+                                    realQty += int.parse(qty);
                                   });
                                   realQty = realQty -
-                                      double.parse(this.hobby[checkData][10]
+                                      int.parse(this.hobby[checkData][10]
                                       ["value"]["label"]);
-                                  realQty = realQty + double.parse(_FNumber);
+                                  realQty = realQty + int.parse(_FNumber);
                                   this.hobby[checkData][10]["value"]
                                   ["remainder"] = (Decimal.parse(
                                       this.hobby[checkData][10]["value"]

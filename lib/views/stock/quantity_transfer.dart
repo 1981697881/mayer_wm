@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:date_format/date_format.dart';
 import 'package:decimal/decimal.dart';
+import 'package:mayer_wm/components/text_formatter.dart';
 import 'package:mayer_wm/model/currency_entity.dart';
 import 'package:mayer_wm/model/submit_entity.dart';
 import 'package:mayer_wm/utils/handler_order.dart';
@@ -109,12 +110,11 @@ class _QuantityTransferState extends State<QuantityTransfer> {
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    //_onEvent("PGS11A1040211;;;15;;1637347079;0;28");
     getStockList();
      getDepartmentList();
     getBillNo();
     getTypeList();
-
+    //_onEvent("2505190106");
   }
   //获取单别
   getTypeList() async {
@@ -344,6 +344,9 @@ class _QuantityTransferState extends State<QuantityTransfer> {
         ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
         return;
       }
+      if (materialDate['quantity'] % 1 == 0) {
+        materialDate['quantity'] = materialDate['quantity'].toInt();
+      }
       var barcodeNum = materialDate['quantity'].toString();
       var barcodeQuantity = materialDate['quantity'].toString();
       var fsn = barcodeNum;
@@ -412,7 +415,7 @@ class _QuantityTransferState extends State<QuantityTransfer> {
           "title": "重量",
           "name": "",
           "isHide": false,
-          "value": {"label": materialDate["weight"], "value": materialDate["weight"]}
+          "value": {"label": materialDate["weight"] == null? '':materialDate["weight"], "value": materialDate["weight"] == null? '':materialDate["weight"]}
         });
         arr.add({
           "title": "移转后产编信息",
@@ -958,17 +961,36 @@ class _QuantityTransferState extends State<QuantityTransfer> {
               color: Colors.white,
               child: Column(
                 children: <Widget>[
-                  /*  Padding(
+                    Padding(
                     padding: EdgeInsets.only(top: 8),
-                    child: Text('输入数量',
+                    child: Text(this.hobby[checkData][checkDataChild]["name"]=="FRemainOutQty"?"数量":"重量",
                         style: TextStyle(
                             fontSize: 16, decoration: TextDecoration.none)),
-                  ),*/
+                  ),
                   Padding(
                       padding: EdgeInsets.only(top: 8),
                       child: Card(
                           child: Column(children: <Widget>[
+                            this.hobby[checkData][checkDataChild]["name"]=="FRemainOutQty"?
                             TextField(
+                              style: TextStyle(color: Colors.black87),
+                              keyboardType: TextInputType.number,
+                              controller: this._textNumber,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly, // 仅允许数字
+                                PositiveIntegerInputFormatter(),       // 处理前导零
+                              ],
+                              decoration: InputDecoration(
+                                labelText: '请输入正整数',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  this._FNumber = value;
+                                });
+                              },
+                            )
+                            : TextField(
                               style: TextStyle(color: Colors.black87),
                               keyboardType: TextInputType.number,
                               controller: this._textNumber,
@@ -985,22 +1007,21 @@ class _QuantityTransferState extends State<QuantityTransfer> {
                     child: FlatButton(
                         color: Colors.grey[100],
                         onPressed: () {
-
                           // 关闭 Dialog
                           Navigator.pop(context);
                           setState(() {
                             if (checkItem == "FLastQty") {
-                              if(double.parse(_FNumber) <= double.parse(this.hobby[checkData][checkDataChild]["value"]['representativeQuantity'])){
+                              if(int.parse(_FNumber) <= int.parse(this.hobby[checkData][checkDataChild]["value"]['representativeQuantity'])){
                                 if (this.hobby[checkData][0]['value']['kingDeeCode'].length > 0) {
                                   var kingDeeCode = this.hobby[checkData][0]['value']['kingDeeCode'][this.hobby[checkData][0]['value']['kingDeeCode'].length - 1].split("-");
                                   var realQty = 0.0;
                                   this.hobby[checkData][0]['value']['kingDeeCode'].forEach((item) {
                                     var qty = item.split("-")[1];
-                                    realQty += double.parse(qty);
+                                    realQty += int.parse(qty);
                                   });
-                                  realQty = realQty - double.parse(this.hobby[checkData][10]
+                                  realQty = realQty - int.parse(this.hobby[checkData][10]
                                   ["value"]["label"]);
-                                  realQty = realQty + double.parse(_FNumber);
+                                  realQty = realQty + int.parse(_FNumber);
                                   this.hobby[checkData][10]["value"]["remainder"] = (Decimal.parse(this.hobby[checkData][10]["value"]["representativeQuantity"]) - Decimal.parse(_FNumber)).toString();
                                   this.hobby[checkData][3]["value"]["value"] = realQty.toString();
                                   this.hobby[checkData][3]["value"]["label"] = realQty.toString();
