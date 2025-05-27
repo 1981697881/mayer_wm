@@ -412,7 +412,7 @@ class _WarehousingDetailState extends State<WarehousingDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
-    //_onEvent("2505190106");
+    //_onEvent("2505270261");
     //_onEvent("PAS111A070712;;;20;;1818057924;0;1");
   }
 
@@ -558,7 +558,7 @@ class _WarehousingDetailState extends State<WarehousingDetail> {
                           "-" +
                           (element[3]['value']['rateValue'] -
                               int.parse(element[9]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -714,7 +714,7 @@ class _WarehousingDetailState extends State<WarehousingDetail> {
                             "-" +
                             (element[3]['value']['rateValue'] -
                                 int.parse(element[9]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -864,7 +864,7 @@ class _WarehousingDetailState extends State<WarehousingDetail> {
                               (element[3]['value']['rateValue'] -
                                   int.parse(
                                       element[9]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;
@@ -1912,6 +1912,7 @@ class _WarehousingDetailState extends State<WarehousingDetail> {
             FrameItem['positions'] = itemCode[3];
             FrameItem['srcBillNo'] = this.orderTranType + "-"+ this.fBillNo;
             FrameItem['type'] = 1;
+            FrameItem['qty'] = itemCode[1];
             FrameList.add(FrameItem);
             if(fSerialSubIndexOf.indexOf(itemCode[0]) == -1){
               subObj['uuid'] = itemCode[0];
@@ -1940,6 +1941,7 @@ class _WarehousingDetailState extends State<WarehousingDetail> {
       Model['items'] = FEntity;
       /*Model['FDescription'] = this._remarkContent.text;*/
       var saveData = jsonEncode(Model);
+      var saveData1 = jsonEncode(FrameList);
       ToastUtil.showInfo('保存');
       String order = await SubmitEntity.saveProduct(Model);
       var res = jsonDecode(order);

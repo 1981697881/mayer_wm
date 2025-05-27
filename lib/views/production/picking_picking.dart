@@ -491,7 +491,7 @@ class _PickingPickingState extends State<PickingPicking> {
                           "-" +
                           (element[9]['value']['rateValue'] -
                               double.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -585,7 +585,7 @@ class _PickingPickingState extends State<PickingPicking> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 double.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -674,7 +674,7 @@ class _PickingPickingState extends State<PickingPicking> {
                               (element[9]['value']['rateValue'] -
                                   double.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;
@@ -1326,6 +1326,7 @@ class _PickingPickingState extends State<PickingPicking> {
             subObj['srcPositions'] = itemCode[2].split("/")[1];
             subObj['srcStockNumber'] = itemCode[2].split("/")[0];
             subObj['uuid'] = itemCode[0];
+            subObj['qty'] = itemCode[1];
             FEntity.add(subObj);
           }
         }

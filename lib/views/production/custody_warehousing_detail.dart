@@ -507,7 +507,7 @@ class _CustodyWarehousingDetailState extends State<CustodyWarehousingDetail> {
                           "-" +
                           (element[3]['value']['rateValue'] -
                               int.parse(element[9]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -607,7 +607,7 @@ class _CustodyWarehousingDetailState extends State<CustodyWarehousingDetail> {
                             "-" +
                             (element[3]['value']['rateValue'] -
                                 int.parse(element[9]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -695,7 +695,7 @@ class _CustodyWarehousingDetailState extends State<CustodyWarehousingDetail> {
                               (element[3]['value']['rateValue'] -
                                   int.parse(
                                       element[9]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;

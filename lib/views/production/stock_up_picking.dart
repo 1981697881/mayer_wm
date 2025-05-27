@@ -568,7 +568,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
       });
       ToastUtil.showInfo('无数据');
     }
-
+    //_onEvent("2505270267");
     // _onEvent("2505190063");
     /* _onEvent("2501150090");
     _onEvent("2501150092");*/
@@ -2236,6 +2236,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
               subObj['srcPositions'] = itemCode[2].split("/")[1];
               subObj['srcStockNumber'] = itemCode[2].split("/")[0];
               subObj['uuid'] = itemCode[0];
+              subObj['qty'] = itemCode[1];
               FEntity.add(subObj);
             }
             if(itemCode.length>3){

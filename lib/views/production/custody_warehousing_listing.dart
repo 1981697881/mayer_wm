@@ -291,8 +291,8 @@ class _CustodyWarehousingListingState
           ToastUtil.showInfo("库位不存在");
         }else{
           this._positionContent.text = _code;
+          //_onEvent("2505270108");
         }
-        //_onEvent("PGH8110110011;;;12;;1037246772;0;1");
       } else {
         ToastUtil.showInfo(jsonDecode(order)['msg']);
       }
@@ -352,12 +352,14 @@ class _CustodyWarehousingListingState
         ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
         return;
       }
-      // 检查是否为整数
+      if (materialDate['quantity'] % 1 == 0) {
+        materialDate['quantity'] = materialDate['quantity'].toInt();
+      }
       if (materialDate['remainQty'] % 1 == 0) {
         materialDate['remainQty'] = materialDate['remainQty'].toInt();
       }
-      var barcodeNum = materialDate['remainQty'].toString();
-      var barcodeQuantity = materialDate['remainQty'].toString();
+      var barcodeNum = materialDate['quantity'].toString();
+      var barcodeQuantity = materialDate['quantity'].toString();
       var fsn = barcodeNum;
       /*var msg = "";
       var orderIndex = 0;
@@ -433,6 +435,23 @@ class _CustodyWarehousingListingState
           "value": {
             "label": this._labelContent.text,
             "value": this._labelContent.text
+          }
+        });
+        arr.add({
+          "title": "条码数量",
+          "name": "FRealQty",
+          "isHide": false,
+          "value": {
+            "label": materialDate['quantity'],
+            "value": materialDate['quantity']
+          }
+        });arr.add({
+          "title": "剩余数量",
+          "name": "FRealQty",
+          "isHide": false,
+          "value": {
+            "label": materialDate['remainQty'],
+            "value": materialDate['remainQty']
           }
         });
         arr.add({
@@ -617,7 +636,7 @@ class _CustodyWarehousingListingState
       List<Widget> comList = [];
       for (int j = 0; j < this.hobby[i].length; j++) {
         if (!this.hobby[i][j]['isHide']) {
-          if (j == 2) {
+          if (j == 4) {
             comList.add(
               Column(children: [
                 Container(
@@ -825,6 +844,7 @@ class _CustodyWarehousingListingState
         FEntityItem['positions'] = element[0]['value']['value'];
         FEntityItem['srcBillNo'] = this.orderTranType + "-"+ this.fBillNo;
         FEntityItem['type'] = 1;
+        FEntityItem['qty'] = element[3]['value']['value'];
         /*var fSerialSub = [];
         var fSerialSubIndexOf = [];
         var kingDeeCode = element[0]['value']['kingDeeCode'];

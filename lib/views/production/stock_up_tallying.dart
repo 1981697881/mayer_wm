@@ -435,7 +435,7 @@ class _StockUpTallyingState extends State<StockUpTallying> {
                           "-" +
                           (element[9]['value']['rateValue'] -
                               double.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -532,7 +532,7 @@ class _StockUpTallyingState extends State<StockUpTallying> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 double.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -626,7 +626,7 @@ class _StockUpTallyingState extends State<StockUpTallying> {
                               (element[9]['value']['rateValue'] -
                                   double.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;

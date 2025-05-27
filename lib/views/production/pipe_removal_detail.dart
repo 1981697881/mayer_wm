@@ -485,7 +485,7 @@ class _PipeRemovalDetailState extends State<PipeRemovalDetail> {
                           "-" +
                           (element[3]['value']['rateValue'] -
                               double.parse(element[9]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -585,7 +585,7 @@ class _PipeRemovalDetailState extends State<PipeRemovalDetail> {
                             "-" +
                             (element[3]['value']['rateValue'] -
                                 double.parse(element[9]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -680,7 +680,7 @@ class _PipeRemovalDetailState extends State<PipeRemovalDetail> {
                               (element[3]['value']['rateValue'] -
                                   double.parse(
                                       element[9]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;

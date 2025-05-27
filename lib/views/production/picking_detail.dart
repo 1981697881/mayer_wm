@@ -435,7 +435,7 @@ class _PickingDetailState extends State<PickingDetail> {
       ToastUtil.showInfo('无数据');
     }
     await this.getRecomentSPPath();
-    //_onEvent("2505190104");
+    //_onEvent("2505270270");
    /* _onEvent("PFS1083070000;;;10000;;0832210921;0;1");
     _onEvent("PFS1083070000;;;10000;;0834198586;0;1");*/
   }
@@ -539,7 +539,6 @@ class _PickingDetailState extends State<PickingDetail> {
                           "-" +
                           (element[3]['value']['rateValue'] -
                               int.parse(element[9]['value']['label']))
-                              .toStringAsFixed(2)
                               .toString() +
                           "-" +
                           fsn+
@@ -639,7 +638,6 @@ class _PickingDetailState extends State<PickingDetail> {
                             "-" +
                             (element[3]['value']['rateValue'] -
                                 int.parse(element[9]['value']['label']))
-                                .toStringAsFixed(2)
                                 .toString() +
                             "-" +
                             fsn+
@@ -732,7 +730,6 @@ class _PickingDetailState extends State<PickingDetail> {
                               (element[3]['value']['rateValue'] -
                                   int.parse(
                                       element[9]['value']['label']))
-                                  .toStringAsFixed(2)
                                   .toString() +
                               "-" +
                               fsn+
@@ -1657,6 +1654,7 @@ class _PickingDetailState extends State<PickingDetail> {
             shelfObj['srcPositions'] = itemCode[3].split("/")[1];
             shelfObj['srcStockNumber'] = itemCode[3].split("/")[0];
             shelfObj['uuid'] = itemCode[0];
+            shelfObj['qty'] = itemCode[1];
             ShelfEntity.add(shelfObj);
             itemIndex++;
           }

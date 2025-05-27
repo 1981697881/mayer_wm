@@ -308,7 +308,7 @@ class _PurchaseWarehousingListingState
           ToastUtil.showInfo("库位不存在");
         }else{
           this._positionContent.text = _code;
-          //_onEvent("PGS1115040311");
+          //_onEvent("2505270108");
         }
         //_onEvent("PGH8110110011;;;12;;1037246772;0;1");
       } else {
@@ -371,8 +371,14 @@ class _PurchaseWarehousingListingState
         ToastUtil.showInfo("条码未入库或已出库，无剩余数量");
         return;
       }
-      var barcodeNum = materialDate['remainQty'].toString();
-      var barcodeQuantity = materialDate['remainQty'].toString();
+      if (materialDate['quantity'] % 1 == 0) {
+        materialDate['quantity'] = materialDate['quantity'].toInt();
+      }
+      if (materialDate['remainQty'] % 1 == 0) {
+        materialDate['remainQty'] = materialDate['remainQty'].toInt();
+      }
+      var barcodeNum = materialDate['quantity'].toString();
+      var barcodeQuantity = materialDate['quantity'].toString();
       var fsn = barcodeNum;
       var stockNumber;
       var stockName;
@@ -460,6 +466,23 @@ class _PurchaseWarehousingListingState
           "value": {
             "label": this._labelContent.text,
             "value": this._labelContent.text
+          }
+        });
+        arr.add({
+          "title": "条码数量",
+          "name": "FRealQty",
+          "isHide": false,
+          "value": {
+            "label": materialDate['quantity'],
+            "value": materialDate['quantity']
+          }
+        });arr.add({
+          "title": "剩余数量",
+          "name": "FRealQty",
+          "isHide": false,
+          "value": {
+            "label": materialDate['remainQty'],
+            "value": materialDate['remainQty']
           }
         });
         arr.add({
@@ -650,7 +673,7 @@ class _PurchaseWarehousingListingState
       List<Widget> comList = [];
       for (int j = 0; j < this.hobby[i].length; j++) {
         if (!this.hobby[i][j]['isHide']) {
-          if (j == 2) {
+          if (j == 4) {
             comList.add(
               Column(children: [
                 Container(
@@ -858,6 +881,7 @@ class _PurchaseWarehousingListingState
         FEntityItem['positions'] = element[0]['value']['value'];
         FEntityItem['stockNumber'] = element[3]['value']['value'];
         FEntityItem['srcBillNo'] = this.orderTranType + "-"+ this.fBillNo;
+        FEntityItem['qty'] = element[3]['value']['value'];
         FEntityItem['type'] = 1;
         /*var fSerialSub = [];
         var fSerialSubIndexOf = [];

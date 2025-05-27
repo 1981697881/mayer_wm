@@ -371,6 +371,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
       });
       ToastUtil.showInfo('无数据');
     }
+    //_onEvent("2505270262");
   }
 
   void _onEvent(event) async {
@@ -489,7 +490,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
                           "-" +
                           (element[9]['value']['rateValue'] -
                               int.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -583,7 +584,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 int.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -672,7 +673,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
                               (element[9]['value']['rateValue'] -
                                   int.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;
@@ -1340,6 +1341,7 @@ class _AllocationDetailState extends State<AllocationDetail> {
             subObj['srcPositions'] = itemCode[2].split("/")[1];
             subObj['srcStockNumber'] = itemCode[2].split("/")[0];
             subObj['uuid'] = itemCode[0];
+            subObj['qty'] = itemCode[1];
             FEntity.add(subObj);
           }
         }

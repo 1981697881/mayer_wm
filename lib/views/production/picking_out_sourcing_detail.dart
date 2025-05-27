@@ -417,7 +417,7 @@ class _PickingOutSourcingDetailState extends State<PickingOutSourcingDetail> {
                           "-" +
                           (element[9]['value']['rateValue'] -
                               double.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -513,7 +513,7 @@ class _PickingOutSourcingDetailState extends State<PickingOutSourcingDetail> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 double.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -603,7 +603,7 @@ class _PickingOutSourcingDetailState extends State<PickingOutSourcingDetail> {
                               (element[9]['value']['rateValue'] -
                                   double.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;

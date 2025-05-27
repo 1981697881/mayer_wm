@@ -129,7 +129,6 @@ class _OffshelfPageState extends State<OffshelfPage> {
           .listen(_onEvent, onError: _onError);
     }
     getStockList();
-    //_onEvent("2502110083");
     // getBillNo();
     //_onEvent("2502191054");
     EasyLoading.dismiss();
@@ -458,11 +457,16 @@ class _OffshelfPageState extends State<OffshelfPage> {
       }
       var number = 0;
       var barCodeScan = materialDate;
-      if (materialDate['quantity'] % 1 == 0) {
-        materialDate['quantity'] = materialDate['quantity'].toInt();
+      if(materialDate['remainQty'] == null || materialDate['remainQty']<0){
+        ToastUtil.showInfo("条码无剩余数量");
+        return;
       }
-      var barcodeNum = materialDate['quantity'].toString();
-      var barcodeQuantity = materialDate['quantity'].toString();
+      if (materialDate['remainQty'] % 1 == 0) {
+        materialDate['quantity'] = materialDate['quantity'].toInt();
+        materialDate['remainQty'] = materialDate['remainQty'].toInt();
+      }
+      var barcodeNum = materialDate['remainQty'].toString();
+      var barcodeQuantity = materialDate['remainQty'].toString();
       var msg = "";
       var orderIndex = 0;
       var fsn = (materialDate['defaultStockNumber']==null?"":materialDate['defaultStockNumber'])+"/"+(materialDate['location']==null?"":materialDate['location']);
@@ -491,7 +495,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
               element[0]['value']['barcode'].add(code);
               //判断扫描数量是否大于单据数量
               if (int.parse(element[3]['value']['label']) >=
-                  element[9]['value']['rateValue']) {
+                  element[11]['value']['rateValue']) {
                 continue;
               } else {
                 //判断条码数量
@@ -501,41 +505,41 @@ class _OffshelfPageState extends State<OffshelfPage> {
                     int.parse(barcodeNum) > 0) {
                   if ((int.parse(element[3]['value']['label']) +
                       int.parse(barcodeNum)) >=
-                      element[9]['value']['rateValue']) {
+                      element[11]['value']['rateValue']) {
                     //判断条码是否重复
                     if (element[0]['value']['scanCode'].indexOf(code) == -1) {
                       var item = code +
                           "-" +
-                          (element[9]['value']['rateValue'] -
+                          (element[11]['value']['rateValue'] -
                               int.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
-                      element[10]['value']['label'] = (element[9]['value']
+                      element[12]['value']['label'] = (element[11]['value']
                       ['label'] -
                           int.parse(element[3]['value']['label']))
                           .toString();
-                      element[10]['value']['value'] = (element[9]['value']
+                      element[12]['value']['value'] = (element[11]['value']
                       ['label'] -
                           int.parse(element[3]['value']['label']))
                           .toString();
                       element[3]['value']['remainder'] = (
-                          int.parse(element[10]['value']['value']) - int.parse(barcodeNum))
+                          int.parse(element[12]['value']['value']) - int.parse(barcodeNum))
                           .toString();
                       element[3]['value']['representativeQuantity'] = barcodeQuantity;
                       barcodeNum = (int.parse(barcodeNum) -
-                          (element[9]['value']['rateValue'] -
+                          (element[11]['value']['rateValue'] -
                               int.parse(element[3]['value']['label'])))
                           .toString();
                       element[3]['value']['label'] = (int.parse(
                           element[3]['value']['label']) +
-                          (element[9]['value']['rateValue'] -
+                          (element[11]['value']['rateValue'] -
                               int.parse(element[3]['value']['label'])))
                           .toString();
                       element[3]['value']['value'] =
                       element[3]['value']['label'];
-                      residue = element[9]['value']['rateValue'] -
+                      residue = element[11]['value']['rateValue'] -
                           int.parse(element[3]['value']['label']);
                       element[0]['value']['kingDeeCode'].add(item);
                       if(barCodeScan['isEnable'] == 1){
@@ -557,8 +561,8 @@ class _OffshelfPageState extends State<OffshelfPage> {
                           barcodeNum +
                           "-" +
                           fsn;
-                      element[10]['value']['label'] = barcodeNum.toString();
-                      element[10]['value']['value'] = barcodeNum.toString();
+                      element[12]['value']['label'] = barcodeNum.toString();
+                      element[12]['value']['value'] = barcodeNum.toString();
                       element[3]['value']['remainder'] = "0";
                       element[3]['value']['representativeQuantity'] = barcodeQuantity;
                       element[0]['value']['kingDeeCode'].add(item);
@@ -585,7 +589,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
               if (element[5]['value']['value'] == barCodeScan['batchNo']) {
                 //判断扫描数量是否大于单据数量
                 if (int.parse(element[3]['value']['label']) >=
-                    element[9]['value']['rateValue']) {
+                    element[11]['value']['rateValue']) {
                   continue;
                 } else {
                   //判断条码数量
@@ -595,41 +599,41 @@ class _OffshelfPageState extends State<OffshelfPage> {
                       int.parse(barcodeNum) > 0) {
                     if ((int.parse(element[3]['value']['label']) +
                         int.parse(barcodeNum)) >=
-                        element[9]['value']['rateValue']) {
+                        element[11]['value']['rateValue']) {
                       //判断条码是否重复
                       if (element[0]['value']['scanCode'].indexOf(code) == -1) {
                         var item = code +
                             "-" +
-                            (element[9]['value']['rateValue'] -
+                            (element[11]['value']['rateValue'] -
                                 int.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
-                        element[10]['value']['label'] = (element[9]['value']
+                        element[12]['value']['label'] = (element[11]['value']
                         ['label'] -
                             int.parse(element[3]['value']['label']))
                             .toString();
-                        element[10]['value']['value'] = (element[9]['value']
+                        element[12]['value']['value'] = (element[11]['value']
                         ['label'] -
                             int.parse(element[3]['value']['label']))
                             .toString();
                         element[3]['value']['remainder'] = (
-                            int.parse(element[10]['value']['value']) - int.parse(barcodeNum))
+                            int.parse(element[12]['value']['value']) - int.parse(barcodeNum))
                             .toString();
                         element[3]['value']['representativeQuantity'] = barcodeQuantity;
                         barcodeNum = (int.parse(barcodeNum) -
-                            (element[9]['value']['rateValue'] -
+                            (element[11]['value']['rateValue'] -
                                 int.parse(element[3]['value']['label'])))
                             .toString();
                         element[3]['value']['label'] = (int.parse(
                             element[3]['value']['label']) +
-                            (element[9]['value']['rateValue'] -
+                            (element[11]['value']['rateValue'] -
                                 int.parse(element[3]['value']['label'])))
                             .toString();
                         element[3]['value']['value'] =
                         element[3]['value']['label'];
-                        residue = element[9]['value']['rateValue'] -
+                        residue = element[11]['value']['rateValue'] -
                             int.parse(element[3]['value']['label']);
                         element[0]['value']['kingDeeCode'].add(item);
                         if(barCodeScan['isEnable'] == 1){
@@ -651,8 +655,8 @@ class _OffshelfPageState extends State<OffshelfPage> {
                             barcodeNum +
                             "-" +
                             fsn;
-                        element[10]['value']['label'] = barcodeNum.toString();
-                        element[10]['value']['value'] = barcodeNum.toString();
+                        element[12]['value']['label'] = barcodeNum.toString();
+                        element[12]['value']['value'] = barcodeNum.toString();
                         element[3]['value']['remainder'] = "0";
                         element[3]['value']['representativeQuantity'] = barcodeQuantity;
                         element[0]['value']['kingDeeCode'].add(item);
@@ -672,7 +676,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
                   element[5]['value']['value'] = barCodeScan['batchNo'] == null? "":barCodeScan['batchNo'];
                   //判断扫描数量是否大于单据数量
                   if (int.parse(element[3]['value']['label']) >=
-                      element[9]['value']['rateValue']) {
+                      element[11]['value']['rateValue']) {
                     continue;
                   } else {
                     //判断条码数量
@@ -682,45 +686,45 @@ class _OffshelfPageState extends State<OffshelfPage> {
                         int.parse(barcodeNum) > 0) {
                       if ((int.parse(element[3]['value']['label']) +
                           int.parse(barcodeNum)) >=
-                          element[9]['value']['rateValue']) {
+                          element[11]['value']['rateValue']) {
                         //判断条码是否重复
                         if (element[0]['value']['scanCode'].indexOf(code) ==
                             -1) {
                           var item = code +
                               "-" +
-                              (element[9]['value']['rateValue'] -
+                              (element[11]['value']['rateValue'] -
                                   int.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;
-                          element[10]['value']['label'] = (element[9]['value']
+                          element[12]['value']['label'] = (element[11]['value']
                           ['label'] -
                               int.parse(element[3]['value']['label']))
                               .toString();
-                          element[10]['value']['value'] = (element[9]['value']
+                          element[12]['value']['value'] = (element[11]['value']
                           ['label'] -
                               int.parse(element[3]['value']['label']))
                               .toString();
                           element[3]['value']['remainder'] = (
-                              int.parse(element[10]['value']['value']) - int.parse(barcodeNum))
+                              int.parse(element[12]['value']['value']) - int.parse(barcodeNum))
                               .toString();
                           element[3]['value']['representativeQuantity'] = barcodeQuantity;
                           barcodeNum = (int.parse(barcodeNum) -
-                              (element[9]['value']['rateValue'] -
+                              (element[11]['value']['rateValue'] -
                                   int.parse(
                                       element[3]['value']['label'])))
                               .toString();
                           element[3]['value']['label'] =
                               (int.parse(element[3]['value']['label']) +
-                                  (element[9]['value']['rateValue'] -
+                                  (element[11]['value']['rateValue'] -
                                       int.parse(
                                           element[3]['value']['label'])))
                                   .toString();
                           element[3]['value']['value'] =
                           element[3]['value']['label'];
-                          residue = element[9]['value']['rateValue'] -
+                          residue = element[11]['value']['rateValue'] -
                               int.parse(element[3]['value']['label']);
                           element[0]['value']['kingDeeCode'].add(item);
                           if(barCodeScan['isEnable'] == 1){
@@ -743,8 +747,8 @@ class _OffshelfPageState extends State<OffshelfPage> {
                               barcodeNum +
                               "-" +
                               fsn;
-                          element[10]['value']['label'] = barcodeNum.toString();
-                          element[10]['value']['value'] = barcodeNum.toString();
+                          element[12]['value']['label'] = barcodeNum.toString();
+                          element[12]['value']['value'] = barcodeNum.toString();
                           element[3]['value']['remainder'] = "0";
                           element[3]['value']['representativeQuantity'] = barcodeQuantity;
                           element[0]['value']['kingDeeCode'].add(item);
@@ -794,11 +798,25 @@ class _OffshelfPageState extends State<OffshelfPage> {
           "value": {"label": materialDate["unitName"], "value": materialDate["unitNumber"]}
         });
         arr.add({
-          "title": "数量",
+          "title": "下架数量",
           "name": "FRealQty",
           "isHide": false,
           /*value[12]*/
-          "value": {"label": materialDate["quantity"].toString(), "value": materialDate["quantity"].toString(),"remainder": "0","representativeQuantity": materialDate["quantity"].toString()}
+          "value": {"label": materialDate["remainQty"].toString(), "value": materialDate["remainQty"].toString(),"remainder": "0","representativeQuantity": materialDate["remainQty"].toString()}
+        });
+        arr.add({
+          "title": "包装数量",
+          "name": "FRealQty",
+          "isHide": false,
+          /*value[12]*/
+          "value": {"label": materialDate["quantity"].toString(), "value": materialDate["quantity"].toString()}
+        });
+        arr.add({
+          "title": "剩余数量",
+          "name": "FRealQty",
+          "isHide": false,
+          /*value[12]*/
+          "value": {"label": materialDate["remainQty"].toString(), "value": materialDate["remainQty"].toString()}
         });
         arr.add({
           "title": "仓库",
@@ -847,7 +865,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
           "title": "最后扫描数量",
           "name": "FLastQty",
           "isHide": true,
-          "value": {"label": materialDate["quantity"].toString(), "value": materialDate["quantity"].toString(),"remainder": "0","representativeQuantity": materialDate["quantity"].toString()}
+          "value": {"label": materialDate["remainQty"].toString(), "value": materialDate["remainQty"].toString(),"remainder": "0","representativeQuantity": materialDate["remainQty"].toString()}
         });
         hobby.add(arr);
       }
@@ -1024,20 +1042,21 @@ class _OffshelfPageState extends State<OffshelfPage> {
                           Navigator.pop(context);
                           setState(() {
                             if (checkItem == "FLastQty") {
-                              if(int.parse(_FNumber) <= int.parse(this.hobby[checkData][checkDataChild]["value"]['representativeQuantity'])){
+                              if(int.parse(_FNumber) <= int.parse(this.hobby[checkData][5]["value"]['value'])){
                                 if (this.hobby[checkData][0]['value']['kingDeeCode'].length > 0) {
-                                  var kingDeeCode = this.hobby[checkData][0]['value']['kingDeeCode'][this.hobby[checkData][0]['value']['kingDeeCode'].length - 1].split("-");
-                                  var realQty = 0;
-                                  this.hobby[checkData][0]['value']['kingDeeCode'].forEach((item) {
-                                    var qty = item.split("-")[1];
-                                    realQty += int.parse(qty);
-                                  });
-                                  realQty = realQty - int.parse(this.hobby[checkData][10]
-                                  ["value"]["label"]);
-                                  realQty = realQty + int.parse(_FNumber);
-                                  this.hobby[checkData][3]["value"]["remainder"] = (Decimal.parse(this.hobby[checkData][3]["value"]["representativeQuantity"]) - Decimal.parse(_FNumber)).toString();
-                                  this.hobby[checkData][3]["value"]["value"] = realQty.toString();
-                                  this.hobby[checkData][3]["value"]["label"] = realQty.toString();
+                                  // var kingDeeCode = this.hobby[checkData][0]['value']['kingDeeCode'][this.hobby[checkData][0]['value']['kingDeeCode'].length - 1].split("-");
+                                  // var realQty = 0;
+                                  // this.hobby[checkData][0]['value']['kingDeeCode'].forEach((item) {
+                                  //   var qty = item.split("-")[1];
+                                  //   realQty += int.parse(qty);
+                                  // });
+                                  // realQty = realQty - int.parse(this.hobby[checkData][5]
+                                  // ["value"]["label"]);
+                                  // realQty = realQty + int.parse(_FNumber);
+                                  // this.hobby[checkData][5]["value"]["value"] = (Decimal.parse(this.hobby[checkData][3]["value"]["value"]) - Decimal.parse(_FNumber)).toString();
+                                  // this.hobby[checkData][5]["value"]["label"] = this.hobby[checkData][5]["value"]["value"];
+                                  // this.hobby[checkData][3]["value"]["value"] = realQty.toString();
+                                  // this.hobby[checkData][3]["value"]["label"] = realQty.toString();
                                   this.hobby[checkData][checkDataChild]["value"]["label"] = _FNumber;
                                   this.hobby[checkData][checkDataChild]['value']["value"] = _FNumber;
                                 } else {
@@ -1129,7 +1148,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
                   child: ListTile(
                       title: Text(this.hobby[i][j]["title"] +
                           '：' +
-                          int.parse(this.hobby[i][j]["value"]["label"]).toString()+'剩余('+this.hobby[i][j]["value"]["remainder"].toString()+')'),
+                          int.parse(this.hobby[i][j]["value"]["label"]).toString()),
                       trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -1165,13 +1184,13 @@ class _OffshelfPageState extends State<OffshelfPage> {
                 divider,
               ]),
             );
-          } else if (j == 4) {
+          } else if (j == 6) {
             comList.add(
               _item('库别:', stockList, this.hobby[i][j]['value']['label'],
                   this.hobby[i][j],
                   stock: this.hobby[i]),
             );
-          } else if (j == 6) {
+          } else if (j == 8) {
             comList.add(
               Column(children: [
                 Container(
@@ -1214,7 +1233,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
                 divider,
               ]),
             );
-          } else if (j == 7) {
+          } else if (j == 9) {
             comList.add(
               Column(children: [
                 Container(
@@ -1240,7 +1259,7 @@ class _OffshelfPageState extends State<OffshelfPage> {
                 divider,
               ]),
             );
-          } else if ( j == 11) {
+          } else if ( j == 13) {
             var itemList = this.hobby[i][0]["value"]['kingDeeCode'];
             List<Widget> listTitle = [];
             var listTitleNum = 1;
@@ -1411,9 +1430,10 @@ class _OffshelfPageState extends State<OffshelfPage> {
             subObj['type'] = 2;
             subObj['billNo'] = "";//this.sourceTranType+'-'+this.fBillNo+"-"+orderDate[hobbyIndex]['FEntryID']
             subObj['date'] = FDate;
-            subObj['srcPositions'] = element[6]['value']['value'];
-            subObj['srcStockNumber'] = element[4]['value']['value'];
+            subObj['srcPositions'] = element[8]['value']['value'];
+            subObj['srcStockNumber'] = element[6]['value']['value'];
             subObj['uuid'] = itemCode[0];
+            subObj['qty'] = element[3]['value']['value'];
             FEntity.add(subObj);
           }
           //FEntity.add(FEntityItem);

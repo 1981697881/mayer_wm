@@ -126,7 +126,7 @@ class _PipeShelvingPageState
           .receiveBroadcastStream()
           .listen(_onEvent, onError: _onError);
     }
-    // _onEvent("B23");
+     //_onEvent("B23");
     EasyLoading.dismiss();
   }
 
@@ -289,8 +289,8 @@ class _PipeShelvingPageState
           ToastUtil.showInfo("库位不存在");
         }else{
           this._positionContent.text = _code;
+          //_onEvent("2505270108");
         }
-        //_onEvent("PGH8110110011;;;12;;1037246772;0;1");
       } else {
         ToastUtil.showInfo(jsonDecode(order)['msg']);
       }
@@ -347,7 +347,8 @@ class _PipeShelvingPageState
       var barCodeScan = materialDate;
       if (materialDate['remainQty'] % 1 == 0) {
         materialDate['remainQty'] = materialDate['remainQty'].toInt();
-      }if (materialDate['quantity'] % 1 == 0) {
+      }
+      if (materialDate['quantity'] % 1 == 0) {
         materialDate['quantity'] = materialDate['quantity'].toInt();
       }
       var barcodeNum = materialDate['quantity'].toString();
@@ -430,6 +431,14 @@ class _PipeShelvingPageState
           }
         });
         arr.add({
+          "title": "条码数量",
+          "name": "FRealQty",
+          "isHide": false,
+          "value": {
+            "label": materialDate['quantity'],
+            "value": materialDate['quantity']
+          }
+        });arr.add({
           "title": "剩余数量",
           "name": "FRealQty",
           "isHide": false,
@@ -793,6 +802,7 @@ class _PipeShelvingPageState
         FEntityItem['uuid'] = element[0]['value']['scanCode'][0];
         FEntityItem['positions'] = element[0]['value']['value'];
         FEntityItem['type'] = 1;
+        FEntityItem['qty'] = element[3]['value']['value'];
         /*var fSerialSub = [];
         var fSerialSubIndexOf = [];
         var kingDeeCode = element[0]['value']['kingDeeCode'];

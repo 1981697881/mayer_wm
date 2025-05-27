@@ -411,7 +411,7 @@ class _ReturnDetailState extends State<ReturnDetail> {
                           "-" +
                           (element[9]['value']['rateValue'] -
                               double.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -507,7 +507,7 @@ class _ReturnDetailState extends State<ReturnDetail> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 double.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -596,7 +596,7 @@ class _ReturnDetailState extends State<ReturnDetail> {
                               (element[9]['value']['rateValue'] -
                                   double.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;

@@ -385,19 +385,18 @@ class _ListingPageState
           this._labelContent.text = code;
           var number = 0;
           var barCodeScan = materialDate;
-          if(materialDate['remainQty'] == null || materialDate['remainQty']<0){
-            ToastUtil.showInfo("条码无剩余数量");
-            return;
-          }
           if(listingType && (materialDate['location'] == null || materialDate['location'] == "")){
             ToastUtil.showInfo("扫描条码无库位信息");
             return;
           }
+          if (materialDate['quantity'] % 1 == 0) {
+            materialDate['quantity'] = materialDate['quantity'].toInt();
+          }
           if (materialDate['remainQty'] % 1 == 0) {
             materialDate['remainQty'] = materialDate['remainQty'].toInt();
           }
-          var barcodeNum = materialDate['remainQty'].toString();
-          var barcodeQuantity = materialDate['remainQty'].toString();
+          var barcodeNum = materialDate['quantity'].toString();
+          var barcodeQuantity = materialDate['quantity'].toString();
           var fsn = barcodeNum;
           /*var msg = "";
       var orderIndex = 0;
@@ -1132,6 +1131,7 @@ class _ListingPageState
         Map<String, dynamic> FEntityItem = Map();
         FEntityItem['uuid'] = element[0]['value']['scanCode'][0];
         FEntityItem['positions'] = element[0]['value']['value'];
+        FEntityItem['qty'] = element[3]['value']['value'];
         FEntityItem['type'] = 1;
         /*var fSerialSub = [];
         var fSerialSubIndexOf = [];

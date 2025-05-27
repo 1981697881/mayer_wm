@@ -440,7 +440,7 @@ class _AllocationTallyingState extends State<AllocationTallying> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 int.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -537,7 +537,7 @@ class _AllocationTallyingState extends State<AllocationTallying> {
                               "-" +
                               (element[9]['value']['rateValue'] -
                                   int.parse(element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;
@@ -631,7 +631,7 @@ class _AllocationTallyingState extends State<AllocationTallying> {
                                 (element[9]['value']['rateValue'] -
                                     int.parse(
                                         element[3]['value']['label']))
-                                    .toStringAsFixed(2)
+
                                     .toString() +
                                 "-" +
                                 fsn;

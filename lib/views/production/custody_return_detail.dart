@@ -144,6 +144,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
     }
     //_onEvent("ldsFGcTl");
     getStockList();
+    //_onEvent("2505270108");
    /* getDepartmentList();*/
     getBillNo();
     getTypeList();
@@ -462,7 +463,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
                           "-" +
                           (element[3]['value']['rateValue'] -
                               int.parse(element[9]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn+
@@ -562,7 +563,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
                             "-" +
                             (element[3]['value']['rateValue'] -
                                 int.parse(element[9]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn+
@@ -655,7 +656,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
                               (element[3]['value']['rateValue'] -
                                   int.parse(
                                       element[9]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn+
@@ -1354,6 +1355,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
               FEntityItem['fauxprice'] = 0;
               FEntityItem['famount'] = 0;
             }
+            FEntityItem['qty'] = itemCode[1];
             FEntityItem['fdCSPId'] = itemCode[3].split("/")[1] == null || itemCode[3].split("/")[1] == ''?"":itemCode[3].split("/")[1];
             FEntityItem['funitId'] = element[2]['value']['value'];
             FEntityItem['fitemId'] = element[0]['value']['value'];
@@ -1366,6 +1368,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
             FrameEntityItem['positions'] = itemCode[3].split("/")[1] == null || itemCode[3].split("/")[1] == ''?"":itemCode[3].split("/")[1];
             FrameEntityItem['srcBillNo'] = this.typeNumber + "-"+ this.orderNo;
             FrameEntityItem['type'] = 1;
+
             FrameEntity.add(FEntityItem);
 
             if(fSerialSubIndexOf.indexOf(itemCode[0]) == -1){
@@ -1396,6 +1399,7 @@ class _CustodyReturnDetailState extends State<CustodyReturnDetail> {
       Model['items'] = FEntity;
       /*Model['FDescription'] = this._remarkContent.text;*/
       var saveData = jsonEncode(Model);
+      var saveData2 = jsonEncode(FrameEntity);
       ToastUtil.showInfo('保存');
       String order = await SubmitEntity.savePicking(Model);
       var res = jsonDecode(order);

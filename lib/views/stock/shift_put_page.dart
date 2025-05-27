@@ -386,7 +386,7 @@ class _ShiftPutPageState extends State<ShiftPutPage> {
                           "-" +
                           (element[9]['value']['rateValue'] -
                               int.parse(element[3]['value']['label']))
-                              .toStringAsFixed(2)
+
                               .toString() +
                           "-" +
                           fsn;
@@ -482,7 +482,7 @@ class _ShiftPutPageState extends State<ShiftPutPage> {
                             "-" +
                             (element[9]['value']['rateValue'] -
                                 int.parse(element[3]['value']['label']))
-                                .toStringAsFixed(2)
+
                                 .toString() +
                             "-" +
                             fsn;
@@ -571,7 +571,7 @@ class _ShiftPutPageState extends State<ShiftPutPage> {
                               (element[9]['value']['rateValue'] -
                                   int.parse(
                                       element[3]['value']['label']))
-                                  .toStringAsFixed(2)
+
                                   .toString() +
                               "-" +
                               fsn;
