@@ -141,44 +141,46 @@ class _PickingPageState extends State<PickingPage> {
     hobby = [];
     if (orderDate.length > 0) {
       orderDate.forEach((value) {
-        List arr = [];
-        arr.add({
-          "title": "单据编号",
-          "name": "FBillNo",
-          "isHide": false,
-          "value": {"label": value["FBillNo"], "value": value["FBillNo"], "fTranType": value["FTranType"]}
-        });
-        arr.add({
-          "title": "单据日期",
-          "name": "FDate",
-          "isHide": false,
-          "value": {"label": value["Fdate"], "value": value["Fdate"]}
-        });
-        arr.add({
-          "title": "物料名称",
-          "name": "FMaterial",
-          "isHide": false,
-           "value": {"label": value['FItemName'] + "- (" + value['FItemNumber'] + ")", "value": value["FItemNumber"]}
-        });
-        arr.add({
-          "title": "规格型号",
-          "name": "FMaterialIdFSpecification",
-          "isHide": false,
-          "value": {"label": value["FItemModel"]==null?'':value["FItemModel"], "value": value["FItemModel"]==null?'':value["FItemModel"]}
-        });
-        arr.add({
-          "title": "单位名称",
-          "name": "FUnitId",
-          "isHide": false,
-          "value": {"label": value["FUnitName"], "value": value["FUnitID"]}
-        });
-        arr.add({
-          "title": "数量",
-          "name": "FQty",
-          "isHide": false,
-          "value": {"label": value["FAuxQty"], "value": value["FAuxQty"]}
-        });
-        hobby.add(arr);
+        if(value["FAuxQty"]>0){
+          List arr = [];
+          arr.add({
+            "title": "单据编号",
+            "name": "FBillNo",
+            "isHide": false,
+            "value": {"label": value["FBillNo"], "value": value["FBillNo"], "fTranType": value["FTranType"]}
+          });
+          arr.add({
+            "title": "单据日期",
+            "name": "FDate",
+            "isHide": false,
+            "value": {"label": value["Fdate"], "value": value["Fdate"]}
+          });
+          arr.add({
+            "title": "物料名称",
+            "name": "FMaterial",
+            "isHide": false,
+            "value": {"label": value['FItemName'] + "- (" + value['FItemNumber'] + ")", "value": value["FItemNumber"]}
+          });
+          arr.add({
+            "title": "规格型号",
+            "name": "FMaterialIdFSpecification",
+            "isHide": false,
+            "value": {"label": value["FItemModel"]==null?'':value["FItemModel"], "value": value["FItemModel"]==null?'':value["FItemModel"]}
+          });
+          arr.add({
+            "title": "单位名称",
+            "name": "FUnitId",
+            "isHide": false,
+            "value": {"label": value["FUnitName"], "value": value["FUnitID"]}
+          });
+          arr.add({
+            "title": "数量",
+            "name": "FQty",
+            "isHide": false,
+            "value": {"label": value["FAuxQty"], "value": value["FAuxQty"]}
+          });
+          hobby.add(arr);
+        }
       });
       /*)*/;
       setState(() {

@@ -314,115 +314,117 @@ class _PickingDetailState extends State<PickingDetail> {
       this.supplierNumber = orderDate[0]["FSupplyNumber"];
       this.orderTranType = orderDate[0]["FTranType"];
       for(var value in orderDate){
-        fNumber.add(value['FItemNumber']);
-        List arr = [];
-        arr.add({
-          "title": "物料名称",
-          "name": "FMaterial",
-          "isHide": false,
-          "value": {
-             "label": value['FItemName'] + "- (" + value['FItemNumber'] + ")", "value": value["FItemNumber"],
-            "barcode": [],
-            "kingDeeCode": [],
-            "scanCode": []
-          }
-        });
-        arr.add({
-          "title": "规格型号",
-          "isHide": false,
-          "name": "FMaterialIdFSpecification",
-          "value": {"label": value["FItemModel"]==null?'':value["FItemModel"], "value": value["FItemModel"]==null?'':value["FItemModel"]}
-        });
-        arr.add({
-          "title": "重量",
-          "name": "FUnitId",
-          "isHide": false,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "申请数量",
-          "name": "",
-          "isHide": false,
-          "value": {
-            "label": value["FAuxQty"],
-            "value": value["FAuxQty"],
-            "rateValue": value["FAuxQty"]
-          } /*+value[12]*0.1*/
-        });
-        arr.add({
-          "title": "领料库位",
-          "name": "FStockID",
-          "isHide": true,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "批号",
-          "name": "FLot",
-          "isHide": true,
-          "value": {"label": '', "value": ''}
-        });
-        arr.add({
-          "title": "库位",
-          "name": "FStockLocID",
-          "isHide": true,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "操作",
-          "name": "",
-          "isHide": true,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "备注",
-          "name": "",
-          "isHide": false,
-          "value": {"label": "", "value": ""}
-        });
-        arr.add({
-          "title": "领料数量",
-          "name": "FRealQty",
-          "isHide": false,
-          /*value[12]*/
-          "value": {"label": "0", "value": "0"}
-        });
-        arr.add({
-          "title": "最后扫描数量",
-          "name": "FLastQty",
-          "isHide": true,
-          "value": {"label": "0", "value": "0","remainder": "0","representativeQuantity": "0"}
-        });
-        Map<String, dynamic> paramsMap = Map();
-        paramsMap['ftranType'] = this.tranType;
-        paramsMap['finBillNo'] = this.fBillNo;
-        List<dynamic> params = [];
-        params.add({"fitemId": value['FItemNumber']});
-        paramsMap['items'] = params;
-        var resdata = json.encode([paramsMap]);
-        String res = await CurrencyEntity.getRecomentStockPlace([paramsMap]);
-        if (jsonDecode(res)['success']) {
+        if(value["FAuxQty"]>0){
+          fNumber.add(value['FItemNumber']);
+          List arr = [];
           arr.add({
-            "title": "库存库位",
+            "title": "物料名称",
+            "name": "FMaterial",
+            "isHide": false,
+            "value": {
+              "label": value['FItemName'] + "- (" + value['FItemNumber'] + ")", "value": value["FItemNumber"],
+              "barcode": [],
+              "kingDeeCode": [],
+              "scanCode": []
+            }
+          });
+          arr.add({
+            "title": "规格型号",
+            "isHide": false,
+            "name": "FMaterialIdFSpecification",
+            "value": {"label": value["FItemModel"]==null?'':value["FItemModel"], "value": value["FItemModel"]==null?'':value["FItemModel"]}
+          });
+          arr.add({
+            "title": "重量",
+            "name": "FUnitId",
+            "isHide": false,
+            "value": {"label": "", "value": ""}
+          });
+          arr.add({
+            "title": "申请数量",
             "name": "",
             "isHide": false,
-            "value": {"label": jsonDecode(res)['data'], "value": jsonDecode(res)['data']}
+            "value": {
+              "label": value["FAuxQty"],
+              "value": value["FAuxQty"],
+              "rateValue": value["FAuxQty"]
+            } /*+value[12]*0.1*/
           });
-        }else{
           arr.add({
-            "title": "库存库位",
+            "title": "领料库位",
+            "name": "FStockID",
+            "isHide": true,
+            "value": {"label": "", "value": ""}
+          });
+          arr.add({
+            "title": "批号",
+            "name": "FLot",
+            "isHide": true,
+            "value": {"label": '', "value": ''}
+          });
+          arr.add({
+            "title": "库位",
+            "name": "FStockLocID",
+            "isHide": true,
+            "value": {"label": "", "value": ""}
+          });
+          arr.add({
+            "title": "操作",
+            "name": "",
+            "isHide": true,
+            "value": {"label": "", "value": ""}
+          });
+          arr.add({
+            "title": "备注",
             "name": "",
             "isHide": false,
             "value": {"label": "", "value": ""}
           });
+          arr.add({
+            "title": "领料数量",
+            "name": "FRealQty",
+            "isHide": false,
+            /*value[12]*/
+            "value": {"label": "0", "value": "0"}
+          });
+          arr.add({
+            "title": "最后扫描数量",
+            "name": "FLastQty",
+            "isHide": true,
+            "value": {"label": "0", "value": "0","remainder": "0","representativeQuantity": "0"}
+          });
+          Map<String, dynamic> paramsMap = Map();
+          paramsMap['ftranType'] = this.tranType;
+          paramsMap['finBillNo'] = this.fBillNo;
+          List<dynamic> params = [];
+          params.add({"fitemId": value['FItemNumber']});
+          paramsMap['items'] = params;
+          var resdata = json.encode([paramsMap]);
+          String res = await CurrencyEntity.getRecomentStockPlace([paramsMap]);
+          if (jsonDecode(res)['success']) {
+            arr.add({
+              "title": "库存库位",
+              "name": "",
+              "isHide": false,
+              "value": {"label": jsonDecode(res)['data'], "value": jsonDecode(res)['data']}
+            });
+          }else{
+            arr.add({
+              "title": "库存库位",
+              "name": "",
+              "isHide": false,
+              "value": {"label": "", "value": ""}
+            });
+          }
+          arr.add({
+            "title": "明细",
+            "name": "",
+            "isHide": false,
+            "value": {"label": "", "value": "", "itemList": []}
+          });
+          hobby.add(arr);
         }
-        arr.add({
-          "title": "明细",
-          "name": "",
-          "isHide": false,
-          "value": {"label": "", "value": "", "itemList": []}
-        });
-        hobby.add(arr);
-      };
+      }
       setState(() {
         EasyLoading.dismiss();
         this._getHobby();
