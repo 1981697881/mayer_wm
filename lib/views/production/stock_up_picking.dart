@@ -352,10 +352,12 @@ class _StockUpPickingState extends State<StockUpPicking> {
           if(jsonDecode(pickRes)['data']['list'].length>0){
             var pickDataList = jsonDecode(pickRes)['data']['list'];
             var barcodeList = [];
+            var scanCodeList = [];
             var kingDeeCodeList = [];
             var pickNum = 0;
             for(var pickItem in pickDataList){
               barcodeList.add(pickItem['FBarcode']);
+              scanCodeList.add(pickItem['FBarcode']);
               pickNum = pickNum + int.parse(pickItem['FQty']);
               var warePosi = (pickItem['defaultStockNumber']==null?"":pickItem['defaultStockNumber'])+"/"+(pickItem['location']==null?"":pickItem['location']);
               var item = pickItem['FBarcode'].toString() +
@@ -380,7 +382,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
                 "value": value['FItemNumber'],
                 "barcode": barcodeList,
                 "kingDeeCode": kingDeeCodeList,
-                "scanCode": barcodeList
+                "scanCode": scanCodeList
               }
             });
             arr.add({
@@ -441,6 +443,12 @@ class _StockUpPickingState extends State<StockUpPicking> {
               "isHide": false,
               /*value[12]*/
               "value": {"label": pickNum.toString(), "value": pickNum.toString()}
+            });
+            arr.add({
+              "title": "最后扫描数量",
+              "name": "FLastQty",
+              "isHide": true,
+              "value": {"label": pickNum.toString(), "value": pickNum.toString(),"remainder": "0","representativeQuantity": pickNum.toString()}
             });
           }else{
             arr.add({
@@ -514,15 +522,14 @@ class _StockUpPickingState extends State<StockUpPicking> {
               /*value[12]*/
               "value": {"label": "0", "value": "0"}
             });
+            arr.add({
+              "title": "最后扫描数量",
+              "name": "FLastQty",
+              "isHide": true,
+              "value": {"label": "0", "value": "0","remainder": "0","representativeQuantity": "0"}
+            });
           }
         }
-
-        arr.add({
-          "title": "最后扫描数量",
-          "name": "FLastQty",
-          "isHide": true,
-          "value": {"label": "0", "value": "0","remainder": "0","representativeQuantity": "0"}
-        });
         Map<String, dynamic> paramsMap = Map();
         paramsMap['ftranType'] = this.tranType;
         paramsMap['finBillNo'] = this.fBillNo;
@@ -568,7 +575,7 @@ class _StockUpPickingState extends State<StockUpPicking> {
       });
       ToastUtil.showInfo('无数据');
     }
-    //_onEvent("2505270267");
+    //_onEvent("2504200173");
     // _onEvent("2505190063");
     /* _onEvent("2501150090");
     _onEvent("2501150092");*/

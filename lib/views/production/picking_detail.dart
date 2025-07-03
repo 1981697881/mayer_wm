@@ -437,7 +437,7 @@ class _PickingDetailState extends State<PickingDetail> {
       ToastUtil.showInfo('无数据');
     }
     await this.getRecomentSPPath();
-    //_onEvent("2505270270");
+    // _onEvent("2506180021");
    /* _onEvent("PFS1083070000;;;10000;;0832210921;0;1");
     _onEvent("PFS1083070000;;;10000;;0834198586;0;1");*/
   }
